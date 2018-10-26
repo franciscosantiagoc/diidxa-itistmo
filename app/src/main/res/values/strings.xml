@@ -1,4 +1,64 @@
 <resources>
-    <string name="app_name">Diidxa-itistmo</string>
+    <string name="app_name">Diidxa</string>
+    <!--........... Seccion SplashScreen ...........-->
+    <string name="splash_app">DIIDXA</string>
+    <string name="splash_autor">TecNM</string>
+    <string name="splash_autor_completo">Tecnológico Nacional de México</string>
+
+
+    <!--........... Seccion Comprobar ErroresEs ...........-->
+    <string name="alertT">TITULO</string>
+    <string name="alertD">DESCRIPCION</string>
+    <string name="alertB">Aceptar</string>
+    <string name="adesc">Adesc</string>
+    <!--........... ESPAÑOL...........-->
+    <string name="tab_Dic">Diccionario</string>
+    <string name="tab_Bus">Búsqueda</string>
     <string name="action_settings">Settings</string>
+
+    <!-- TODO: Menu Español -->
+    <string name="action_menu_zapoteco">Zapoteco</string>
+    <string name="action_menu_español">Español</string>
+    <string name="action_menu_AcercaDe">Acerca de</string>
+    <string name="action_menu_salir">Salir</string>
+
+
+    <!-- TODO: Fragment Busqueda -->
+    <string name="ETTextEspañol">Escribe una palabra</string>
+    <string name="BTNTextEspañolPlay">Escuchar</string>
+    <string name="BTNTextEspañolSearch">Buscar</string>
+    <string name="suges">Quizá esto es lo que buscaba.</string>
+    <string name="mjs_sugges">Por el momento la palabra que busca no está disponible, puede sugerirla presionando el siguiente botón</string>
+    <string name="btnsuges">Sugerir</string>
+
+    <!-- TODO: Desing Item Busqueda -->
+    <string name="PlaySonEsp">Escuchar pronunciación</string>
+    <string name="PlayEjEsp">Escuchar Ejemplo</string>
+    <!--........... ZAPOTECO ...........-->
+
+    <string name="tab_Dic_Za">DIIDXA NAGANA</string>
+    <string name="tab_Bus_Za">GUENDARUYUBI</string>
+    <string name="title_activity_main_zap">sdfsdf</string>
+
+    <!-- TODO: Fragment Busqueda -->
+    <string name="ETTextZapoteco">Bicaa\' diidxa</string>
+    <string name="BTNTextZapotecoPlay">Bica Diaga</string>
+    <string name="BTNTextZapotecoSearch">Guséendayubi</string>
+    <string name="suges_za">Zánda ca tobi de ca ndi\' cuyuubi lu</string>
+    <string name="mjs_sugges_za">Diidxa ni cuyuubi lu\' gasti di ni, zaanda gucaalu diidxa di ra gucha\'azi naalu botón di</string>
+    <string name="btnsuges_za">Sugerir</string>
+    <string name="title_activity_main_za">MainActivityZa</string>
+
+    <!-- TODO: Desing Item Busqueda -->
+    <string name="PlaySonZap">Bica Diaga</string>
+    <string name="PlayEjZap">Bica Diaga ti diidxa</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
