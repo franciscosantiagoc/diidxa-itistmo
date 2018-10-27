@@ -31,7 +31,7 @@
     <string name="mjs_sugges">Por el momento la palabra que busca no está disponible, puede sugerirla presionando el siguiente botón</string>
     <string name="btnsuges">Sugerir</string>
 
-    <!-- TODO: Desing Item Busqueda -->
+    <!-- TODO: Desing Item Busqueda Español-->
     <string name="PlaySonEsp">Escuchar pronunciación</string>
     <string name="PlayEjEsp">Escuchar Ejemplo</string>
     <!--........... ZAPOTECO ...........-->
@@ -40,7 +40,7 @@
     <string name="tab_Bus_Za">GUENDARUYUBI</string>
     <string name="title_activity_main_zap">sdfsdf</string>
 
-    <!-- TODO: Fragment Busqueda -->
+    <!-- TODO: Fragment Busqueda Zapoteco-->
     <string name="ETTextZapoteco">Bicaa\' diidxa</string>
     <string name="BTNTextZapotecoPlay">Bica Diaga</string>
     <string name="BTNTextZapotecoSearch">Guséendayubi</string>
@@ -53,12 +53,13 @@
     <string name="PlaySonZap">Bica Diaga</string>
     <string name="PlayEjZap">Bica Diaga ti diidxa</string>
     <string name="title_activity_main2">Main2Activity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_main_es">MainActivityEs</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- TODO: Desing Item Acerca de -->
+    <string name="Acer_Desc_Es">ESTA APLICACION FUE DESARROLLADA POR ALUMNOS DEL INSTITUTO TECNOLÓGICO DEL ISTMO, AGRADECEMOS AL PROFESOR HOMELINO TOLEDO
+        CORTES Y AL PROFESOR AURELIO TOLEDO MATUS POR SU ORIENTACIÓN Y SU AYUDA EN EL DESARROLLO DE ESTE PROYECTO, SI DESEAS PARTICIPAR, INFORMAR DE
+        ALGÚN ERROR, SUGERENCIA O COMENTARIO, POR FAVOR ENVÍA UN CORREO A DIIDXA@ITISTMO.EDU.MX</string>
 
 </resources>

@@ -3,8 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="diidxa.itistmo.edu.mx.diidxa_itistmo.MainActivityEs">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_MenEsp"
+        android:title="@string/action_menu_español"/>
+
+    <item
+        android:id="@+id/action_MenZap"
+        android:title="@string/action_menu_zapoteco" />
+    <item
+        android:id="@+id/action_MenAcer"
+        android:title="@string/action_menu_AcercaDe" />
+    <item
+        android:id="@+id/action_MenSal"
+        android:title="@string/action_menu_salir" />
 </menu>
