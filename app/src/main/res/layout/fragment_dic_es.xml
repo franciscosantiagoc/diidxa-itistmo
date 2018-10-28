@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="DicEsFragment"
+    android:orientation="horizontal">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:gravity="center_horizontal">
+
+        <EditText
+            android:id="@+id/entradaPalabra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:hint="@string/ETTextEspañol"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:gravity="center_horizontal"/>
+    </android.support.design.widget.TextInputLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        >
+
+        <Button
+            android:id="@+id/BTNTextEspañolSearch"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/boton2"
+            android:text="@string/BTNTextEspañolSearch"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/nosearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/suges"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="290dp"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="190dp">
+
+        <TextView
+            android:id="@+id/sugMsjE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mjs_sugges"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/sugEspBtn"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/sugMsjE"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/boton2"
+            android:text="@string/btnsuges"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"/>
+
+
+        <Button
+            android:id="@+id/sugEspBtn"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/sugMsjE"
+            android:layout_marginTop="40dp"
+            android:background="@color/colorAccent"
+            android:text="@string/btnsuges"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="190dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:visibility="invisible">
+        <ListView
+            android:layout_marginTop="0dp"
+            android:id="@+id/listview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
+</FrameLayout>
+
+
+Probando funcion onclick-->
+
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <Button
+        android:id="@+id/BTNTextEspañolSearch"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/colorAccent"
+        android:text="@string/BTNTextEspañolSearch"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+</LinearLayout>

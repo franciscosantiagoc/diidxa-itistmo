@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <com.github.snowdream.android.widget.SmartImageView
+        android:id="@+id/imagen1"
+        android:layout_marginTop="15dp"
+        android:layout_width="300dp"
+        android:layout_height="201dp" />
+
+    <TextView
+        android:id="@+id/tvEspañol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"/>
+
+    <TextView
+        android:id="@+id/tvZapoteco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        />
+
+    <Button
+        android:id="@+id/buttonPlE"
+        android:layout_marginTop="20dp"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/boton2"
+        android:text="@string/PlaySonEsp"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/buttonPEJE"
+        android:layout_marginTop="15dp"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/boton2"
+        android:text="@string/PlayEjEsp"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>

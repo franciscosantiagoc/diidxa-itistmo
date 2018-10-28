@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/textAlertTit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="3dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:text="@string/alertT"
+        android:textAlignment="center"
+        android:textColor="@color/blank"
+        android:textSize="15sp"/>
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/blank"
+        android:layout_below="@+id/textAlertTit">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/adesc"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/alert3" />
+
+        <TextView
+            android:id="@+id/textAlertDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:text="@string/alertD"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/ButtonAlert"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/boton2"
+            android:text="@string/alertB"
+            android:textAlignment="center"
+            android:textColor="@color/blank"
+            android:textSize="13sp" />
+    </LinearLayout>
+</RelativeLayout>
