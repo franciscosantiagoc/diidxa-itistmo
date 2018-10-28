@@ -27,10 +27,8 @@
             android:name=".MainActivityZa"
             android:label="@string/title_activity_main_za"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AcercaDe"
-
-
-            ></activity>
+        <activity android:name=".AcercaDe" />
+        <activity android:name=".Suggestions"></activity>
     </application>
 
 </manifest>
