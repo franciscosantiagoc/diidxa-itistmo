@@ -16,7 +16,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.RunnableFuture;
 
 public class ComprobarConexion {
-    /*public boolean isOnline(Context context) {
+   /* public boolean isOnline(Context context) {
 
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -57,8 +57,8 @@ public class ComprobarConexion {
     public boolean prueba(Context context){
         return true;
     }
-
-    /*public void DialogF(Context context) {
+/*
+    public void DialogF(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(R.string.error_conexion_descripcion).setTitle(R.string.error_conexion_titulo);
         builder.setCancelable(false);

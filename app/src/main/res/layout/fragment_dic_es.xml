@@ -49,14 +49,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/suges"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="290dp"
+        android:layout_height="280dp"
         android:baselineAligned="false"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
@@ -71,7 +72,8 @@
             android:textStyle="bold"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            android:visibility="invisible"/>
 
         <Button
             android:id="@+id/sugEspBtn"
@@ -83,23 +85,22 @@
             android:background="@drawable/boton2"
             android:text="@string/btnsuges"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:visibility="invisible"/>
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="190dp"
+        android:layout_marginTop="180dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:visibility="invisible">
+        >
         <ListView
-            android:layout_marginTop="0dp"
             android:id="@+id/listview"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:visibility="invisible"/>
     </LinearLayout>
 
 
