@@ -47,14 +47,14 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
     private ArrayList palabraZ = new ArrayList();
     private ArrayList palabraE = new ArrayList();
     private ArrayList imagen =new ArrayList();
-    //private ArrayList audioZa =new ArrayList();
+    private ArrayList audioZa =new ArrayList();
     private ArrayList audioEjZa =new ArrayList();
 
     //TODO:Variables
     private String host= "https://diidxa.itistmo.edu.mx"/*"https://dev.porgeeks.com"String host= "http://172.19.1.231"*/,archivo = "diccionarioDZ.php";
-    private String A,audio;
+    private String A;//,audio;
     private int positioni;
-    private int nf=0;
+    //private int nf=0;
     //TODO: librerias
     private JSONArray jsonArray;
     private InputMethodManager imm;
@@ -161,7 +161,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onClick(View view) {
 
-                    int tam = audio.toString().length();
+                    int tam = audioZa.get(positioni).toString().length();
                     if (tam==0){
                         //TTS.speak("El audio aun no esta disponible", TextToSpeech.QUEUE_FLUSH, null);
                         Toast.makeText(getActivity(),"El audio no esta disponible",Toast.LENGTH_SHORT).show();
@@ -170,7 +170,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                         try {
                             mp = new MediaPlayer();
                             //mp.setDataSource("https://"+host+"/app/capturista/traduccion/zapoteco/"+audio);
-                            mp.setDataSource(host + "/app/capturista/traduccion/zapoteco/" + audio);
+                            mp.setDataSource(host + "/app/capturista/traduccion/zapoteco/" + audioZa.get(positioni));
                             mp.prepare();
                             mp.start();
                         } catch (IOException e) {
@@ -215,7 +215,8 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                             palabraZ.clear();
                             palabraE.clear();
                             imagen.clear();
-                            audio = "";
+                            audioZa.clear();
+                            //audio = "";
                             Log.d("paso 3", "Funcionando correctamente");
 
                             jsonArray = new JSONArray(new String(responseBody));
@@ -228,15 +229,15 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                             //Toast.makeText(getContext(),jsonArray.getJSONObject(0).get("español").toString(),Toast.LENGTH_SHORT).show();
                             //Toast.makeText(getContext(),entradaPalabra.getText().toString(),Toast.LENGTH_SHORT).show();
 
-                            if (jsonArray.length()==1){
+                            /*f (jsonArray.length()==1){
                                 if (entradaPalabra.getText().toString().equals(jsonArray.getJSONObject(0).get("español").toString())){
                                     nosearch.setVisibility(View.INVISIBLE);
-                                    audio = jsonArray.getJSONObject(0).get("audio").toString();
+                                    //audioZa.add(jsonArray.getJSONObject(0).get("audio").toString());
                                     //btnTextEspañolPlay.setVisibility(View.VISIBLE);
                                 }
                                 else if (entradaPalabra.getText().toString().equals(jsonArray.getJSONObject(0).get("zapoteco").toString())){
                                     nosearch.setVisibility(View.INVISIBLE);
-                                    audio = jsonArray.getJSONObject(0).get("audio").toString();
+                                    //audioZa.add(jsonArray.getJSONObject(0).get("audio").toString());
                                     //btnTextEspañolPlay.setVisibility(View.VISIBLE);
                                 }else if (jsonArray.getJSONObject(0).get("español").toString().equals("No existe coincidencia")){
                                     nosearch.setVisibility(View.INVISIBLE);
@@ -247,27 +248,49 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                                     //btnTextEspañolPlay.setVisibility(View.INVISIBLE);
                                 }
 
-                            }
+                            }*/
                             Log.d("funcion 2","agregando resultados a compnentes");
+                            Log.d("funcion 2","Datos-----------------------");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 Log.d("funcion 2","agregando resultados de compnente "+(i+1));
-                                palabraE.add(jsonArray.getJSONObject(i).get("español"));
-                                palabraZ.add(jsonArray.getJSONObject(i).getString("zapoteco"));
-                                imagen.add(jsonArray.getJSONObject(i).get("imagen"));
-                                Log.d("funcion 2","Datos-----------------------");
-                                Log.d("funcion 2","palabra español "+jsonArray.getJSONObject(i).get("español"));
-                                Log.d("funcion 2","palabra Zapoteco "+jsonArray.getJSONObject(i).getString("zapoteco"));
-                                Log.d("funcion 2","palabra imagen "+jsonArray.getJSONObject(i).get("imagen"));
+                                Object d1,d2,d3,d4;
+                                d1=jsonArray.getJSONObject(i).get("español");
+                                d2=jsonArray.getJSONObject(i).getString("zapoteco");
+                                d3= jsonArray.getJSONObject(i).get("imagen");
+                                d4=jsonArray.getJSONObject(0).get("audio").toString();
+                                //Log.d("Palabra df","A la palabra "+d1+" le faltan datos");
+                                /*if(d2.equals("")||d3.equals("")||d4.equals("")){
+                                    //condicional para evitar devolver algo vacio, por lo tantosi hay algun dato vacio será reportado en firebase
+                                    listView.setVisibility(View.INVISIBLE);
+                                    nosearch.setVisibility(View.INVISIBLE);
+                                    sug.setVisibility(View.VISIBLE);
+                                    btnsuges.setVisibility(View.VISIBLE);
+                                    //nf=0;
+                                }else{*/
+                                    palabraE.add(d1);
+                                    palabraZ.add(d2);
+                                    imagen.add(d3);
+                                    audioZa.add(d4);
+
+                                    Log.d("funcion 2","palabra español "+d1);
+                                    Log.d("funcion 2","palabra Zapoteco "+d2);
+                                    Log.d("funcion 2","palabra imagen "+d3);
+                                    Log.d("funcion 2","audio palabra"+d4);
+                                //}
                             }
-                            //if (nf==0) {
+                            if (audioZa.size()>0) {
+                                nosearch.setVisibility(View.VISIBLE);
+                                sug.setVisibility(View.INVISIBLE);
+                                btnsuges.setVisibility(View.INVISIBLE);
                                 listView.setVisibility(View.VISIBLE);
                                 listView.setAdapter(new DicEsFragment.ImagenAdapter(getContext()));
-                           /* }else{
+                            }else{
                                 listView.setVisibility(View.INVISIBLE);
+                                nosearch.setVisibility(View.INVISIBLE);
                                 sug.setVisibility(View.VISIBLE);
                                 btnsuges.setVisibility(View.VISIBLE);
-                                nf=0;
-                            }*/
+                                //nf=0;
+                            }
                         } catch (JSONException e) {
                            Log.d("Error JSON","Error"+e);
                         } catch(Exception e){
