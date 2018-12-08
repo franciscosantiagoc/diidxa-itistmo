@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1088812976098",
+    "firebase_url": "https://diidxa-itistmo.firebaseio.com",
+    "project_id": "diidxa-itistmo",
+    "storage_bucket": "diidxa-itistmo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088812976098:android:b35fb07257ae1951",
+        "android_client_info": {
+          "package_name": "diidxa.itistmo.edu.mx.diidxa_itistmo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1088812976098-6u7ogulegh5lq8gdo3urbmaqik0qlseb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "diidxa.itistmo.edu.mx.diidxa_itistmo",
+            "certificate_hash": "85c0b6c32b7e2182101d3148848193ee0b943794"
+          }
+        },
+        {
+          "client_id": "1088812976098-cp75hqvhp86k8tr2titdui7e0ct0n3r1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0535M1kBtWZ5A7ku04Ad44xEQFfbhwLs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1088812976098-cp75hqvhp86k8tr2titdui7e0ct0n3r1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
