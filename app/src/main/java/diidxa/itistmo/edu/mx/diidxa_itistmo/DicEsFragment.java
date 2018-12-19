@@ -26,6 +26,7 @@ import com.github.snowdream.android.widget.SmartImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 
 import java.io.IOException;
@@ -51,19 +52,20 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
     private ArrayList audioZa =new ArrayList();
     private ArrayList sigej =new ArrayList();
     private ArrayList audioEjZa =new ArrayList();
+    private ArrayList jsonresp =new ArrayList();
 
     //TODO:Variables
-    private String host="http://172.0.0.1" /*"192.168.0.10""https://diidxa.itistmo.edu.mx""https://dev.porgeeks.com"String host= "http://172.19.1.231"*/,archivo = "pruebaDiccionario.php";
+    private String host="http://10.0.2.2" /*"192.168.0.10""https://diidxa.itistmo.edu.mx""https://dev.porgeeks.com"String host= "http://172.19.1.231"*/,archivo = "pruebaDiccionario.php";
     private String A;//,audio;
     private int positioni;
     //private int nf=0;
     //TODO: librerias
     private JSONArray jsonArray;
-    private InputMethodManager imm;
+    private JSONObject json;
+    //private InputMethodManager imm;
     //private TextToSpeech TTS;   //libreria para leer texto
-
     private MediaPlayer mp;
-
+    private String esp,zap,img,aud,eje,sig,audej;
 
 
     public DicEsFragment() {
@@ -107,6 +109,82 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
         }
     }
     //TODO: comienza proceso
+
+
+    private void descargarImagenes(String s) {
+        try{
+        A=s;
+        if(A==s){
+            final ProgressDialog pd = new ProgressDialog(getContext());
+            pd.setMessage("Cargando Datos...");
+            pd.show();
+
+            AsyncHttpClient ahc = new AsyncHttpClient();
+            //ahc.get("https://"+host+"/webservice/"+archivo+"?id="+s, new AsyncHttpResponseHandler() {
+            ahc.get(host+"/diidxa-server-itistmo/"+archivo+"?id="+s, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    pd.dismiss();
+                    if (statusCode == 200) {
+                        pd.dismiss();
+                        try {
+                            Log.d("Paso1 ","Consulta realizada");
+                            imagen.clear();
+                            palabraE.clear();
+                            palabraZ.clear();
+                            ejemZ.clear();
+                            audioZa.clear();
+                            audioEjZa.clear();
+                            sigej.clear();
+                            jsonresp.add(new String(responseBody));
+
+                           for (int i = 0; i < jsonresp.size(); i++) {
+
+                               if(jsonresp.size()==1){
+
+                               }else{
+                                   String dat= jsonresp.get(i).toString();
+                                   json= new JSONObject(dat.substring(dat.indexOf("{"), dat.lastIndexOf("}") + 1));
+                                   esp=json.getString("palabra");
+                                   zap=json.getString("palabraz");
+                                   aud=json.getString("audio");
+                                   img= json.getString("imagen");
+                                   eje=json.getString("ejemplo");
+                                   sig=json.getString("significado");
+                                   audej=json.getString("audioej");
+                                   palabraE.add(esp);
+                                   palabraZ.add(zap);
+                                   imagen.add(img);
+                                   audioZa.add(aud);
+                                   ejemZ.add(eje);
+                                   sigej.add(sig);
+                                   audioEjZa.add(audej);
+                               }
+                           }
+                        } catch (JSONException e) {
+                           Log.d("JSON"," Respuesta Error"+e);
+                        } catch(Exception e){
+                            Log.d("Error", "Error "+e);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    Log.d("paso 1", "solicitud a servidor denegada error: "+error);
+                }
+            });
+        }else{
+            A=s;
+        }}catch (Exception e){
+            Log.d("Error obtencion","Error al realizar funcion "+e);
+        }
+
+    }
+
+
+
+
 
     public class ImagenAdapter extends BaseAdapter {
         Context ctx;
@@ -200,130 +278,6 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
             });
             return viewG;
         }
-    }
-    private void descargarImagenes(String s) {
-        try{
-        A=s;
-        if(A==s){
-            final ProgressDialog pd = new ProgressDialog(getContext());
-            pd.setMessage("Cargando Datos...");
-            pd.show();
-
-            AsyncHttpClient ahc = new AsyncHttpClient();
-            //ahc.get("https://"+host+"/webservice/"+archivo+"?id="+s, new AsyncHttpResponseHandler() {
-            ahc.get(host+"/webservice2/"+archivo+"?id="+s, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    pd.dismiss();
-                    if (statusCode == 200) {
-                        pd.dismiss();
-                        try {
-                            Log.d("Paso1 ","Consulta realizada");
-                            imagen.clear();
-                            palabraE.clear();
-                            palabraZ.clear();
-                            ejemZ.clear();
-                            audioZa.clear();
-                            audioEjZa.clear();
-                            sigej.clear();
-                            jsonArray = new JSONArray(new String(responseBody));
-                            //String tam = Integer.toString(jsonArray.length());
-                            //Toast.makeText(getContext(),tam,Toast.LENGTH_SHORT).show();
-                            if (jsonArray.length()>0){
-                                Log.d("Paso2 ","Existen datos");
-                                nosearch.setVisibility(View.VISIBLE);
-                            /*f (jsonArray.length()==1){
-                                if (entradaPalabra.getText().toString().equals(jsonArray.getJSONObject(0).get("español").toString())){
-                                    nosearch.setVisibility(View.INVISIBLE);
-                                    //audioZa.add(jsonArray.getJSONObject(0).get("audio").toString());
-                                    //btnTextEspañolPlay.setVisibility(View.VISIBLE);
-                                }
-                                else
-                                 if (entradaPalabra.getText().toString().equals(jsonArray.getJSONObject(0).get("zapoteco").toString())){
-                                    nosearch.setVisibility(View.INVISIBLE);
-                                    //audioZa.add(jsonArray.getJSONObject(0).get("audio").toString());
-                                    //btnTextEspañolPlay.setVisibility(View.VISIBLE);
-                                }else if (jsonArray.getJSONObject(0).get("español").toString().equals("No existe coincidencia")){
-                                    nosearch.setVisibility(View.INVISIBLE);
-                                    //btnTextEspañolPlay.setVisibility(View.INVISIBLE);
-                                    nf=1;
-                                }else{
-                                    nosearch.setVisibility(View.VISIBLE);
-                                    //btnTextEspañolPlay.setVisibility(View.INVISIBLE);
-                                }
-
-                            }*/
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    String esp,zap,img,aud,eje,sig,audej;
-                                    esp=jsonArray.getJSONObject(i).getString("español");
-                                    zap=jsonArray.getJSONObject(i).getString("zapoteco");
-                                    img= jsonArray.getJSONObject(i).getString("imagen");
-                                    aud=jsonArray.getJSONObject(0).getString("audio");
-                                    eje=jsonArray.getJSONObject(0).getString("ejemplo");
-                                    sig=jsonArray.getJSONObject(0).getString("significado");
-                                    audej=jsonArray.getJSONObject(0).getString("audioej");
-
-                                    if(esp.equals("No existe coincidencia")&&zap.equals("con ningun idioma.")){
-                                        listView.setVisibility(View.INVISIBLE);
-                                        nosearch.setVisibility(View.INVISIBLE);
-                                        sug.setVisibility(View.VISIBLE);
-                                        btnsuges.setVisibility(View.VISIBLE);
-                                        //nf=0;
-                                    }else{
-                                        listView.setVisibility(View.VISIBLE);
-                                        nosearch.setVisibility(View.VISIBLE);
-                                        sug.setVisibility(View.INVISIBLE);
-                                        btnsuges.setVisibility(View.INVISIBLE);
-                                        palabraE.add(esp);
-                                        palabraZ.add(zap);
-                                        imagen.add(img);
-                                        audioZa.add(aud);
-                                        ejemZ.add(eje);
-                                        sigej.add(sig);
-                                        audioEjZa.add(audej);
-                                        Log.d("Paso3 ","Datos: ");
-                                        Log.d("Esp ","Español "+palabraE.get(i));
-                                        Log.d("zap ","Zapoteco "+palabraZ.get(i));
-                                        Log.d("audio ","Audio "+audioZa.get(i));
-                                        Log.d("Imagen ","Imagen "+imagen.get(i));
-                                    }
-                                }
-                            }else{
-                                Log.d("Paso2 ","No existen datos");
-                                nosearch.setVisibility(View.INVISIBLE);
-                            }
-                            /*if (audioZa.size()>0) {
-                                nosearch.setVisibility(View.VISIBLE);
-                                sug.setVisibility(View.INVISIBLE);
-                                btnsuges.setVisibility(View.INVISIBLE);
-                                listView.setVisibility(View.VISIBLE);
-                                listView.setAdapter(new DicEsFragment.ImagenAdapter(getContext()));
-                            }else{
-                                listView.setVisibility(View.INVISIBLE);
-                                nosearch.setVisibility(View.INVISIBLE);
-                                sug.setVisibility(View.VISIBLE);
-                                btnsuges.setVisibility(View.VISIBLE);
-                                //nf=0;
-                            }*/
-                        } catch (JSONException e) {
-                           Log.d("Error JSON","Error"+e);
-                        } catch(Exception e){
-                            Log.d("Error", "Error "+e);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Log.d("paso 1", "solicitud a servidor denegada error: "+error);
-                }
-            });
-        }else{
-            A=s;
-        }}catch (Exception e){
-            Log.d("Error obtencion","Error al realizar funcion "+e);
-        }
-
     }
 
 
