@@ -6,4 +6,5 @@
     <color name="colorAccent">#e65100</color>
     <color name="blank">#ffffff</color>
     <color name="red">#ff0202</color>
+    <color name="black">#000</color>
 </resources>

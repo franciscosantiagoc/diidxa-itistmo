@@ -16,7 +16,6 @@
     <!--........... ESPAÑOL...........-->
     <string name="tab_Dic">DICCIONARIO</string>
     <string name="tab_Bus">BUSQUEDA</string>
-    <string name="action_settings">Settings</string>
 
     <!-- TODO: Menu Español -->
     <string name="action_menu_zapoteco">Zapoteco</string>
@@ -80,4 +79,14 @@
     <string name="textsugEmailZa">Escriba su correo</string>
     <string name="textsugBtnCZa">Cancelar</string>
     <string name="textsugBtnEZa">Aceptar</string>-->
+
+
+    <!-- TODO: Titulos Errores -->
+    <string name="Serv">Error al Conectar</string>
+
+    <!-- TODO: Textos Errores -->
+   <string name="ErrorCons">Error al realizar la consulta</string>
+    <string name="CamposVacios">El campo está vacio, verifique los datos</string>
+    <string name="ConexionServ">Error al conectar con el servidor, verifique su conexion</string>
+
 </resources>

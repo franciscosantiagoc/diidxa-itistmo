@@ -37,8 +37,34 @@
         android:layout_marginRight="15dp"
         />
 
+    <TextView
+        android:id="@+id/tvSignificado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        />
+
+    <TextView
+        android:id="@+id/tvEjemplo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        />
+
     <Button
-        android:id="@+id/buttonPlE"
+        android:id="@+id/buttonPron"
         android:layout_marginTop="20dp"
         android:layout_width="200dp"
         android:layout_height="50dp"
@@ -49,7 +75,7 @@
         android:textStyle="bold"/>
 
     <Button
-        android:id="@+id/buttonPEJE"
+        android:id="@+id/buttonEJE"
         android:layout_marginTop="15dp"
         android:layout_width="200dp"
         android:layout_height="50dp"

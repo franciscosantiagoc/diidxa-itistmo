@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,7 +57,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
     private String host="http://10.0.2.2" /*"192.168.0.10""https://diidxa.itistmo.edu.mx""https://dev.porgeeks.com"String host= "http://172.19.1.231"*/,archivo = "pruebaDiccionario.php";
     private String A;//,audio;
     private int positioni;
-    //private int nf=0;
+    private int nf=0;
     //TODO: librerias
     private JSONArray jsonArray;
     private JSONObject json;
@@ -66,6 +65,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
     //private TextToSpeech TTS;   //libreria para leer texto
     private MediaPlayer mp;
     private String esp,zap,img,aud,eje,sig,audej;
+    CustomDialog cd = new CustomDialog();
 
 
     public DicEsFragment() {
@@ -81,11 +81,11 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
 
         View view =inflater.inflate(R.layout.fragment_dic_es, container, false);
         entradaPalabra = (EditText)view.findViewById(R.id.entradaPalabra);
-        btnsuges = (Button) view.findViewById(R.id.sugEspBtn);
         search = (Button) view.findViewById(R.id.BTNTextEspañolSearch);
-        nosearch = (TextView) view.findViewById(R.id.nosearch);
         sug = (TextView)view.findViewById(R.id.sugMsjE);
-        btnsuges = (Button)view.findViewById(R.id.sugEspBtn);
+        btnsuges = (Button) view.findViewById(R.id.sugEspBtn);
+        nosearch = (TextView) view.findViewById(R.id.nosearch);
+        //btnsuges = (Button)view.findViewById(R.id.sugEspBtn);
         listView = (ListView) view.findViewById(R.id.listview);
         btnsuges.setOnClickListener(this);
         search.setOnClickListener(this);
@@ -114,7 +114,11 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
     private void descargarImagenes(String s) {
         try{
         A=s;
-        if(A==s){
+        if(A.equals("")) {
+            //cd.createDialog(getResources().getString(R.string.ErrorCons),getResources().getString(R.string.CamposVacios),false,getActivity().getApplicationContext());
+            Toast.makeText(getActivity().getApplicationContext(),getResources().getString(R.string.ErrorCons)+","+getResources().getString(R.string.CamposVacios),Toast.LENGTH_LONG).show();
+        }else{
+
             final ProgressDialog pd = new ProgressDialog(getContext());
             pd.setMessage("Cargando Datos...");
             pd.show();
@@ -139,19 +143,35 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                             jsonresp.add(new String(responseBody));
 
                            for (int i = 0; i < jsonresp.size(); i++) {
-
-                               if(jsonresp.size()==1){
-
-                               }else{
-                                   String dat= jsonresp.get(i).toString();
-                                   json= new JSONObject(dat.substring(dat.indexOf("{"), dat.lastIndexOf("}") + 1));
-                                   esp=json.getString("palabra");
-                                   zap=json.getString("palabraz");
-                                   aud=json.getString("audio");
-                                   img= json.getString("imagen");
-                                   eje=json.getString("ejemplo");
-                                   sig=json.getString("significado");
-                                   audej=json.getString("audioej");
+                               String dat = jsonresp.get(i).toString();
+                               json = new JSONObject(dat.substring(dat.indexOf("{"), dat.lastIndexOf("}") + 1));
+                               esp = json.getString("español");
+                               zap = json.getString("zapoteco");
+                               img = json.getString("imagen");
+                               aud = json.getString("audio");
+                               eje = json.getString("ejemplo");
+                               sig = json.getString("significado");
+                               audej = json.getString("audioej");
+                               if (esp.equals("No existe coincidencia") && zap.equals("con ningun idioma") && img.equals("losentimos.jpg")) {
+                                   /*entradaPalabra = (EditText)view.findViewById(R.id.entradaPalabra);
+                                   search = (Button) view.findViewById(R.id.BTNTextEspañolSearch);
+                                   sug = (TextView)view.findViewById(R.id.sugMsjE);
+                                   btnsuges = (Button) view.findViewById(R.id.sugEspBtn);
+                                   nosearch = (TextView) view.findViewById(R.id.nosearch);
+                                   //btnsuges = (Button)view.findViewById(R.id.sugEspBtn);
+                                   listView = (ListView) view.findViewById(R.id.listview);*/
+                                   nosearch.setVisibility(View.INVISIBLE);
+                                   listView.setVisibility(View.INVISIBLE);
+                                   sug.setVisibility(View.VISIBLE);
+                                   btnsuges.setVisibility(View.VISIBLE);
+                                   nf = 1;
+                                   //Toast.makeText(getActivity(),"No hay coincidencia",Toast.LENGTH_SHORT).show();
+                               } else {
+                                   nosearch.setVisibility(View.VISIBLE);
+                                   listView.setVisibility(View.VISIBLE);
+                                   sug.setVisibility(View.INVISIBLE);
+                                   btnsuges.setVisibility(View.INVISIBLE);
+                                   //Toast.makeText(getActivity(),"Existen coincidencia",Toast.LENGTH_SHORT).show();
                                    palabraE.add(esp);
                                    palabraZ.add(zap);
                                    imagen.add(img);
@@ -159,12 +179,15 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                                    ejemZ.add(eje);
                                    sigej.add(sig);
                                    audioEjZa.add(audej);
+                                   nf = 0;
                                }
                            }
+                           if(nf==0){
+                               listView.setAdapter(new DicEsFragment.ImagenAdapter(getContext()));
+                           }
+
                         } catch (JSONException e) {
-                           Log.d("JSON"," Respuesta Error"+e);
-                        } catch(Exception e){
-                            Log.d("Error", "Error "+e);
+                            Log.d("JSON", " Respuesta Error" + e);
                         }
                     }
                 }
@@ -172,11 +195,11 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Log.d("paso 1", "solicitud a servidor denegada error: "+error);
+                    cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ),false,getActivity());
                 }
-            });
-        }else{
-            A=s;
-        }}catch (Exception e){
+                });
+            }
+        }catch (Exception e){
             Log.d("Error obtencion","Error al realizar funcion "+e);
         }
 
@@ -190,7 +213,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
         Context ctx;
         LayoutInflater layoutInflater;
         SmartImageView smartImageView;
-        TextView español,zapoteco;
+        TextView español,zapoteco, ejemplo, significado;
         Button btnsoundZapotec, btnsoundEjZapotec;
 
         public ImagenAdapter (Context app){
@@ -214,19 +237,24 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             ViewGroup viewG = (ViewGroup)layoutInflater.inflate(R.layout.desing_item_dic, null);
-            Log.d("paso 4", "implementando vista de listview No."+i);
+            //Log.d("paso 4", "implementando vista de listview No."+i);
             smartImageView = (SmartImageView)viewG.findViewById(R.id.imagen1);
             español = (TextView)viewG.findViewById(R.id.tvEspañol);
             zapoteco = (TextView)viewG.findViewById(R.id.tvZapoteco);
-            btnsoundZapotec = (Button)viewG.findViewById(R.id.buttonPlE);
-            btnsoundEjZapotec = (Button)viewG.findViewById(R.id.buttonPEJE);
+            ejemplo = (TextView)viewG.findViewById(R.id.tvEjemplo);
+            significado = (TextView)viewG.findViewById(R.id.tvSignificado);
+            btnsoundZapotec = (Button)viewG.findViewById(R.id.buttonPron);
+            btnsoundEjZapotec = (Button)viewG.findViewById(R.id.buttonEJE);
+
+
             //String urlFinal = "https://"+host+"/app/capturista/traduccion/images/"+imagen.get(i).toString();
             String urlFinal = host+"/app/capturista/traduccion/images/"+imagen.get(i).toString();
-
             Rect rect = new Rect(smartImageView.getLeft(), smartImageView.getTop(), smartImageView.getRight(), smartImageView.getBottom());
             smartImageView.setImageUrl(urlFinal, rect);
             español.setText(palabraE.get(i).toString());
             zapoteco.setText(palabraZ.get(i).toString());
+            ejemplo.setText(ejemZ.get(i).toString());
+            significado.setText(sigej.get(i).toString());
             positioni = i;
             //Boton implementado en listview para reproducir audio en zapoteco
             btnsoundZapotec.setOnClickListener(new View.OnClickListener() {
@@ -246,7 +274,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                             mp.start();
                         } catch (IOException e) {
                             //TTS.speak("El audio no esta disponible.", TextToSpeech.QUEUE_FLUSH, null);
-                            Log.d("ObtencionaudioZapoteco","Error al obtener el audio de la palabra en zapoteco NO."+(positioni+1));
+                            Log.d("ObtencionaudioZapoteco","Error al obtener el audio "+ audioZa.get(positioni)+" de la palabra " + palabraE.get(positioni).toString());
                         }
                     }
                 }
@@ -265,12 +293,12 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                         try {
                             mp = new MediaPlayer();
                             //mp.setDataSource("https://"+host+"/app/capturista/traduccion/zapoteco/"+audio);
-                            mp.setDataSource(host + "/app/capturista/traduccion/ejemplos/" + audioZa.get(positioni));
+                            mp.setDataSource(host + "/app/capturista/traduccion/ejemplos/" + audioEjZa.get(positioni));
                             mp.prepare();
                             mp.start();
                         } catch (IOException e) {
                             //TTS.speak("El audio no esta disponible.", TextToSpeech.QUEUE_FLUSH, null);
-                            Log.d("ObtencionaudioZapoteco","Error al obtener el audio de la palabra en zapoteco NO."+(positioni+1));
+                            Log.d("ObtencionaudioZapoteco","Error al obtener el audio "+audioEjZa.get(positioni)+" del ejemplo de la palabra " + palabraE.get(positioni).toString());
                         }
                     }
 

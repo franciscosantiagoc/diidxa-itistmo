@@ -49,10 +49,8 @@ public class SplashScreen extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    //Envio de alerta Personalizada
-                                    //DialogF();
                                     //Toast.makeText(getApplicationContext(),"", Toast.LENGTH_SHORT).show();
-                                    cd.createDialog("Titulo de prueba","Esta es una prueba de dialogos personalizados",true,SplashScreen.this);
+                                    cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ),true,SplashScreen.this);
                                 }
                             });
 
