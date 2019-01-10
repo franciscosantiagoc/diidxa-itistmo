@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,11 +28,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import java.io.IOException;
 import java.util.ArrayList;
 
-import com.github.snowdream.android.widget.SmartImageView;
+//import com.github.snowdream.android.widget.SmartImageView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -51,12 +50,10 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
     private ArrayList audioZa =new ArrayList();
     private ArrayList sigej =new ArrayList();
     private ArrayList audioEjZa =new ArrayList();
-    private ArrayList jsonresp =new ArrayList();
 
     //TODO:Variables
     private String host="http://10.0.2.2" /*"192.168.0.10""https://diidxa.itistmo.edu.mx""https://dev.porgeeks.com"String host= "http://172.19.1.231"*/,archivo = "pruebaDiccionario.php";
-    private String A;//,audio;
-    private int positioni;
+    private String A,audioz,audioez;
     private int nf=0;
     //TODO: librerias
     private JSONArray jsonArray;
@@ -104,6 +101,14 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
             case R.id.BTNTextEspañolSearch:
                 if (!entradaPalabra.equals("") || entradaPalabra.length()>0){
                     descargarImagenes(entradaPalabra.getText().toString());
+                    palabraE.clear();
+                    palabraZ.clear();
+                    imagen.clear();
+                    ejemZ.clear();
+                    sigej.clear();
+                    audioZa.clear();
+                    audioEjZa.clear();
+
                 }
                 break;
         }
@@ -114,7 +119,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
     private void descargarImagenes(String s) {
         try{
         A=s;
-        if(A.equals("")) {
+        if(A.equals("adf")) {
             //cd.createDialog(getResources().getString(R.string.ErrorCons),getResources().getString(R.string.CamposVacios),false,getActivity().getApplicationContext());
             Toast.makeText(getActivity().getApplicationContext(),getResources().getString(R.string.ErrorCons)+","+getResources().getString(R.string.CamposVacios),Toast.LENGTH_LONG).show();
         }else{
@@ -125,26 +130,28 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
 
             AsyncHttpClient ahc = new AsyncHttpClient();
             //ahc.get("https://"+host+"/webservice/"+archivo+"?id="+s, new AsyncHttpResponseHandler() {
+
             ahc.get(host+"/diidxa-server-itistmo/"+archivo+"?id="+s, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     pd.dismiss();
                     if (statusCode == 200) {
                         pd.dismiss();
-                        try {
-                            Log.d("Paso1 ","Consulta realizada");
-                            imagen.clear();
-                            palabraE.clear();
-                            palabraZ.clear();
-                            ejemZ.clear();
-                            audioZa.clear();
-                            audioEjZa.clear();
-                            sigej.clear();
-                            jsonresp.add(new String(responseBody));
 
-                           for (int i = 0; i < jsonresp.size(); i++) {
-                               String dat = jsonresp.get(i).toString();
-                               json = new JSONObject(dat.substring(dat.indexOf("{"), dat.lastIndexOf("}") + 1));
+                        try {
+                            String respuesta= new String(responseBody);
+                            Log.d("Datos",respuesta);
+                            /*respuesta=respuesta.replace("[","");
+                            respuesta=respuesta.replace("]","");*/
+
+                            //JsonArray jsonArray = (JsonArray) jsonParser.parse(data);
+                            jsonArray = new JSONArray(respuesta);
+                            Log.d("Datos","Conversion exitosa");
+
+                           for (int i = 0; i < jsonArray.length(); i++) {
+                               json = jsonArray.getJSONObject(i);
+                               //String dat = jsonresp.get(i).toString();
+                               //json = new JSONObject(dat.substring(dat.indexOf("{"), dat.lastIndexOf("}") + 1));
                                esp = json.getString("español");
                                zap = json.getString("zapoteco");
                                img = json.getString("imagen");
@@ -152,14 +159,15 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                                eje = json.getString("ejemplo");
                                sig = json.getString("significado");
                                audej = json.getString("audioej");
+                               /*Log.d("Datos",esp);
+                               Log.d("Datos",zap);
+                               Log.d("Datos",img);
+                               Log.d("Datos",aud);
+                               Log.d("Datos",eje);
+                               Log.d("Datos",sig);
+                               Log.d("Datos",audej);
+                               Log.d("Datos","--------------------------------------------a");*/
                                if (esp.equals("No existe coincidencia") && zap.equals("con ningun idioma") && img.equals("losentimos.jpg")) {
-                                   /*entradaPalabra = (EditText)view.findViewById(R.id.entradaPalabra);
-                                   search = (Button) view.findViewById(R.id.BTNTextEspañolSearch);
-                                   sug = (TextView)view.findViewById(R.id.sugMsjE);
-                                   btnsuges = (Button) view.findViewById(R.id.sugEspBtn);
-                                   nosearch = (TextView) view.findViewById(R.id.nosearch);
-                                   //btnsuges = (Button)view.findViewById(R.id.sugEspBtn);
-                                   listView = (ListView) view.findViewById(R.id.listview);*/
                                    nosearch.setVisibility(View.INVISIBLE);
                                    listView.setVisibility(View.INVISIBLE);
                                    sug.setVisibility(View.VISIBLE);
@@ -172,6 +180,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                                    sug.setVisibility(View.INVISIBLE);
                                    btnsuges.setVisibility(View.INVISIBLE);
                                    //Toast.makeText(getActivity(),"Existen coincidencia",Toast.LENGTH_SHORT).show();
+
                                    palabraE.add(esp);
                                    palabraZ.add(zap);
                                    imagen.add(img);
@@ -179,15 +188,27 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                                    ejemZ.add(eje);
                                    sigej.add(sig);
                                    audioEjZa.add(audej);
+                                  /* Log.d("Datos",esp);
+                                   Log.d("Datos",zap);
+                                   Log.d("Datos",img);
+                                   Log.d("Datos",aud);
+                                   Log.d("Datos",eje);
+                                   Log.d("Datos",sig);
+                                   Log.d("Dtos",audej);*/
+
                                    nf = 0;
                                }
                            }
-                           if(nf==0){
+                           if(nf==0) {
+                               /*for(int n=0;n<imagen.size();n++){
+                                   Log.d("Audio no"+n,audioZa.get(n).toString());
+                                   Log.d("AudioE no"+n,audioEjZa.get(n).toString());
+                               }*/
                                listView.setAdapter(new DicEsFragment.ImagenAdapter(getContext()));
                            }
 
                         } catch (JSONException e) {
-                            Log.d("JSON", " Respuesta Error" + e);
+                            Log.d("Datosa", " Respuesta Error" + e);
                         }
                     }
                 }
@@ -215,6 +236,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
         SmartImageView smartImageView;
         TextView español,zapoteco, ejemplo, significado;
         Button btnsoundZapotec, btnsoundEjZapotec;
+        String auza="",auejemplo="";
 
         public ImagenAdapter (Context app){
             this.ctx=app;
@@ -237,6 +259,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             ViewGroup viewG = (ViewGroup)layoutInflater.inflate(R.layout.desing_item_dic, null);
+            //viewG.removeAllViews();
             //Log.d("paso 4", "implementando vista de listview No."+i);
             smartImageView = (SmartImageView)viewG.findViewById(R.id.imagen1);
             español = (TextView)viewG.findViewById(R.id.tvEspañol);
@@ -245,38 +268,44 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
             significado = (TextView)viewG.findViewById(R.id.tvSignificado);
             btnsoundZapotec = (Button)viewG.findViewById(R.id.buttonPron);
             btnsoundEjZapotec = (Button)viewG.findViewById(R.id.buttonEJE);
-
+//diidxa.itistmo.edu.mx/app/capturista/traduccion/images/mano.jpg";
 
             //String urlFinal = "https://"+host+"/app/capturista/traduccion/images/"+imagen.get(i).toString();
             String urlFinal = host+"/app/capturista/traduccion/images/"+imagen.get(i).toString();
             Rect rect = new Rect(smartImageView.getLeft(), smartImageView.getTop(), smartImageView.getRight(), smartImageView.getBottom());
             smartImageView.setImageUrl(urlFinal, rect);
+            audioz=audioZa.get(i).toString();
+            audioez= audioEjZa.get(i).toString();
             español.setText(palabraE.get(i).toString());
             zapoteco.setText(palabraZ.get(i).toString());
-            ejemplo.setText(ejemZ.get(i).toString());
-            significado.setText(sigej.get(i).toString());
-            positioni = i;
+            ejemplo.setText(audioz);//ejemZ.get(i).toString());
+            significado.setText(audioez);//sigej.get(i).toString());
+
             //Boton implementado en listview para reproducir audio en zapoteco
             btnsoundZapotec.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int tam = audioZa.get(positioni).toString().length();
+                    /*int tam = audioZa.get(positioni).toString().length();
                     if (tam==0){
                         //TTS.speak("El audio aun no esta disponible", TextToSpeech.QUEUE_FLUSH, null);
                         Toast.makeText(getActivity(),"El audio no esta disponible",Toast.LENGTH_SHORT).show();
                     }
-                    else {
-                        try {
+                    else {*/
+                        Toast.makeText(getActivity(),audioz,Toast.LENGTH_SHORT).show();
+                        /*try {
+                            Toast.makeText(getActivity(),audioZa.get(positioni).toString(),Toast.LENGTH_SHORT).show();
                             mp = new MediaPlayer();
+                            mp.stop();
                             //mp.setDataSource("https://"+host+"/app/capturista/traduccion/zapoteco/"+audio);
-                            mp.setDataSource(host + "/app/capturista/traduccion/zapoteco/" + audioZa.get(positioni));
+                            mp.setDataSource(host+"/app/capturista/traduccion/zapoteco/mano.aac");//"+ audioZa.get(positioni));////+
                             mp.prepare();
                             mp.start();
+
                         } catch (IOException e) {
                             //TTS.speak("El audio no esta disponible.", TextToSpeech.QUEUE_FLUSH, null);
-                            Log.d("ObtencionaudioZapoteco","Error al obtener el audio "+ audioZa.get(positioni)+" de la palabra " + palabraE.get(positioni).toString());
-                        }
-                    }
+                            Log.d("Obtencion audio","Error al obtener el audio "+ audioZa.get(positioni)+" de la palabra " + palabraE.get(positioni).toString());
+                        }*/
+                  //  }
                 }
             });
             /*Boton implementado en listview para reproducir audio de ejemplo
@@ -284,23 +313,26 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
             btnsoundEjZapotec.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int tam = audioZa.get(positioni).toString().length();
+                   /* int tam = audioZa.get(positioni).toString().length();
                     if (tam==0){
                         //TTS.speak("El audio aun no esta disponible", TextToSpeech.QUEUE_FLUSH, null);
                         Toast.makeText(getActivity(),"El audio no esta disponible",Toast.LENGTH_SHORT).show();
                     }
-                    else {
-                        try {
+                    else {*/
+
+                        Toast.makeText(getActivity(),audioez,Toast.LENGTH_SHORT).show();
+                        /*try {
                             mp = new MediaPlayer();
+                            mp.stop();
                             //mp.setDataSource("https://"+host+"/app/capturista/traduccion/zapoteco/"+audio);
                             mp.setDataSource(host + "/app/capturista/traduccion/ejemplos/" + audioEjZa.get(positioni));
                             mp.prepare();
                             mp.start();
                         } catch (IOException e) {
                             //TTS.speak("El audio no esta disponible.", TextToSpeech.QUEUE_FLUSH, null);
-                            Log.d("ObtencionaudioZapoteco","Error al obtener el audio "+audioEjZa.get(positioni)+" del ejemplo de la palabra " + palabraE.get(positioni).toString());
-                        }
-                    }
+                            Log.d("Obtencion Ejemplo","Error al obtener el audio "+audioEjZa.get(positioni)+" del ejemplo de la palabra " + palabraE.get(positioni).toString());
+                        }*/
+                    //}
 
                 }
             });
