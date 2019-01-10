@@ -257,7 +257,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(final int i, View view, ViewGroup viewGroup) {
             ViewGroup viewG = (ViewGroup)layoutInflater.inflate(R.layout.desing_item_dic, null);
             //viewG.removeAllViews();
             //Log.d("paso 4", "implementando vista de listview No."+i);
@@ -278,8 +278,8 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
             audioez= audioEjZa.get(i).toString();
             español.setText(palabraE.get(i).toString());
             zapoteco.setText(palabraZ.get(i).toString());
-            ejemplo.setText(audioz);//ejemZ.get(i).toString());
-            significado.setText(audioez);//sigej.get(i).toString());
+            ejemplo.setText(ejemZ.get(i).toString());
+            significado.setText(sigej.get(i).toString());
 
             //Boton implementado en listview para reproducir audio en zapoteco
             btnsoundZapotec.setOnClickListener(new View.OnClickListener() {
@@ -291,7 +291,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                         Toast.makeText(getActivity(),"El audio no esta disponible",Toast.LENGTH_SHORT).show();
                     }
                     else {*/
-                        Toast.makeText(getActivity(),audioz,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),audioZa.get(i).toString(),Toast.LENGTH_SHORT).show();
                         /*try {
                             Toast.makeText(getActivity(),audioZa.get(positioni).toString(),Toast.LENGTH_SHORT).show();
                             mp = new MediaPlayer();
@@ -320,7 +320,7 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
                     }
                     else {*/
 
-                        Toast.makeText(getActivity(),audioez,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),audioEjZa.get(i).toString(),Toast.LENGTH_SHORT).show();
                         /*try {
                             mp = new MediaPlayer();
                             mp.stop();
@@ -339,7 +339,6 @@ public class DicEsFragment extends Fragment implements View.OnClickListener {
             return viewG;
         }
     }
-
 
 
 }
