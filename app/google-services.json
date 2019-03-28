@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "1088812976098-9j39gvh5f0pjn8pie8rhaef4ii5e7o6b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "diidxa.itistmo.edu.mx.diidxa_itistmo",
+            "certificate_hash": "6388614d9ec49885c7ca9cf74a849681311acdde"
+          }
+        },
+        {
+          "client_id": "1088812976098-42amt0c62e13bsp6ndp2fciushdiohcl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "diidxa.itistmo.edu.mx.diidxa_itistmo",
+            "certificate_hash": "3561c8d050e43b12cddecb572639fb0f847c0bc5"
+          }
+        },
+        {
           "client_id": "1088812976098-cp75hqvhp86k8tr2titdui7e0ct0n3r1.apps.googleusercontent.com",
           "client_type": 3
         }

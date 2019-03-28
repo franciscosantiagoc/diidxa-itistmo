@@ -21,6 +21,7 @@ public class CustomDialog extends DialogFragment {
                 if(cerrar){
                     System.exit(0);
                     dismiss();
+                    //onDestroy();
                 }else {
                     dismiss();
                 }

@@ -13,6 +13,8 @@
     <string name="alertD">DESCRIPCION</string>
     <string name="alertB">Aceptar</string>
     <string name="adesc">Adesc</string>
+
+
     <!--........... ESPAÑOL...........-->
     <string name="tab_Dic">DICCIONARIO</string>
     <string name="tab_Bus">BUSQUEDA</string>
@@ -48,6 +50,16 @@
     <string name="textsugEmail">Escriba su correo</string>
     <string name="textsugBtnC">Cancelar</string>
     <string name="textsugBtnE">Aceptar</string>
+
+
+    <!-- TODO: Titulos Errores -->
+    <string name="Serv">Error al Conectar</string>
+
+    <!-- TODO: Textos Errores -->
+    <string name="ErrorCons">Error al realizar la consulta</string>
+    <string name="CamposVacios">El campo está vacio, verifique los datos</string>
+
+    <string name="ConexionServ">Error al conectar con el servidor, intentelo mas tarde</string>
     <!--........... ......................................ZAPOTECO ..............................................................................-->
 
     <string name="tab_Dic_Za">DIIDXA NAGANA</string>
@@ -81,12 +93,6 @@
     <string name="textsugBtnEZa">Aceptar</string>-->
 
 
-    <!-- TODO: Titulos Errores -->
-    <string name="Serv">Error al Conectar</string>
 
-    <!-- TODO: Textos Errores -->
-   <string name="ErrorCons">Error al realizar la consulta</string>
-    <string name="CamposVacios">El campo está vacio, verifique los datos</string>
-    <string name="ConexionServ">Error al conectar con el servidor, verifique su conexion</string>
 
 </resources>

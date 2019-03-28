@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class SplashScreen extends AppCompatActivity {
     ProgressBar pb;
     int progress=0;
@@ -32,6 +34,7 @@ public class SplashScreen extends AppCompatActivity {
         // set the progress
         pb.setProgress(progress);
         // thread is used to change the progress value
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -40,7 +43,10 @@ public class SplashScreen extends AppCompatActivity {
                     setProgressValue(progress + 10);
                     if (progress==100){
                         //  if(cc.isOnline(getApplicationContext())) {
-                        if(cc.prueba(getApplicationContext())){
+                       final List list =cc.prueba(SplashScreen.this);
+                       String r=list.get(0).toString();
+                       final String text=list.get(1).toString();
+                        if(r.equals("true")){
                             //if(cc.isOnlineNet(getApplicationContext())) {
                             Intent intent = new Intent(getApplicationContext(), MainActivityEs.class);
                             startActivity(intent);
@@ -50,7 +56,7 @@ public class SplashScreen extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     //Toast.makeText(getApplicationContext(),"", Toast.LENGTH_SHORT).show();
-                                    cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ),true,SplashScreen.this);
+                                    cd.createDialog(getResources().getString(R.string.Serv),text,true,SplashScreen.this);
                                 }
                             });
 
