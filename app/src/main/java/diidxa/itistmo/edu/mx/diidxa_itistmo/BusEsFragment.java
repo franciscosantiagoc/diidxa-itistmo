@@ -16,9 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.snowdream.android.widget.SmartImageView;
-import com.google.firebase.crash.FirebaseCrash;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Callback;
@@ -48,7 +48,8 @@ public class BusEsFragment extends Fragment {
     private CustomDialog cd = new CustomDialog();
     private ComprobarConexion cc=new ComprobarConexion();
     private EventBus envio = EventBus.getDefault();
-    Comunicador com;
+    private int contador=0;
+    //Comunicador com;
 
     public BusEsFragment() {
         // Required empty public constructor
@@ -117,10 +118,15 @@ public class BusEsFragment extends Fragment {
                                     //detecta el click a un item
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                                        com.envio();
-                                        DatosComunicacion d=new DatosComunicacion(palabraE.get(pos).toString(), palabraZ.get(pos).toString());
-
+                                        //com.envio();
+                                        DatosComunicacion d=new DatosComunicacion(palabraE.get(pos).toString(), palabraZ.get(pos).toString(),imagen.get(pos).toString());
                                         envio.post(d);
+                                        if(contador==0){
+                                            Toast.makeText(getActivity().getApplicationContext(),getString(R.string.sel_item_bus_es1)+palabraE.get(pos)+" "+getString(R.string.sel_item_bus_es2),Toast.LENGTH_LONG).show();
+                                            contador++;
+                                        }else {
+                                            contador++;
+                                        }
                                     }
                                 });
                             }
@@ -133,11 +139,7 @@ public class BusEsFragment extends Fragment {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Log.d("RespuestaB","Error al conectar con el servidor: BusquedaEsp");
-                    //FirebaseCrash.report(new Exception("Error al conectar con el servidor: BusquedaEsp"));
-                    FirebaseCrash.log("Error al conectar con el servidor: BusquedaEsp");
                     cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
-
-
                 }
             });
         }
@@ -202,13 +204,13 @@ public class BusEsFragment extends Fragment {
         }
     }
 //permite el envio de los datos del item seleccionado a diccionario
-    public void onAttach (Context cont){
+    /*public void onAttach (Context cont){
         super.onAttach(cont);
         com=(Comunicador) cont;
     }
     public interface Comunicador {
         public void envio();
-    }
+    }*/
 
 
 }

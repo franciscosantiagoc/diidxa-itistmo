@@ -1,29 +1,18 @@
 package diidxa.itistmo.edu.mx.diidxa_itistmo;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 public class MainActivityZa extends AppCompatActivity {
 
     private ViewPager mViewPager;
-    private static final String TAG = "MainActivity";
+    //private static final String TAG = "MainActivity";
     private SectionsPageAdapter mSectionsPageAdapter;
     private TabLayout tabLayout;
 
@@ -48,8 +37,8 @@ public class MainActivityZa extends AppCompatActivity {
     //implementa los fragments mediante la clase SectionsPageAdapter
     private void setupViewPager(ViewPager viewPager){
         SectionsPageAdapter adapt= new SectionsPageAdapter(getSupportFragmentManager());
-        adapt.addFragment(new DicEsFragment(),getString(R.string.tab_Dic_Za));
-        adapt.addFragment(new BusEsFragment(),getString(R.string.tab_Bus_Za));
+        adapt.addFragment(new DicZaFragment(),getString(R.string.tab_Dic_Za));
+        adapt.addFragment(new BusZaFragment(),getString(R.string.tab_Bus_Za));
         viewPager.setAdapter(adapt);
     }
 
@@ -94,6 +83,11 @@ public class MainActivityZa extends AppCompatActivity {
             startActivity(new Intent(getBaseContext(), MainActivityEs.class)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
             finish();
+        }
+        if(id==R.id.action_MenSug){
+            Intent intent = new Intent(this, Suggestionsza.class);
+            intent.putExtra("Idioma",false);
+            startActivity(intent);
         }
         if(id == R.id.action_MenAcer){
             Intent intent = new Intent (this, AcercaDe.class);

@@ -1,16 +1,9 @@
 package diidxa.itistmo.edu.mx.diidxa_itistmo;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -42,7 +35,7 @@ public class SplashScreen extends AppCompatActivity {
                     Thread.sleep(200);
                     setProgressValue(progress + 10);
                     if (progress==100){
-                        //  if(cc.isOnline(getApplicationContext())) {
+                        //f(cc.isOnline(getApplicationContext())) {
                        final List list =cc.prueba(SplashScreen.this);
                        String r=list.get(0).toString();
                        final String text=list.get(1).toString();

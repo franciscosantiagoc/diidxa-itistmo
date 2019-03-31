@@ -17,7 +17,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.snowdream.android.widget.SmartImageView;
-import com.google.firebase.crash.FirebaseCrash;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Callback;
@@ -41,6 +40,7 @@ public class DicEsFragment extends Fragment  {
     private ListView listView;
     private TextView sug, nosearch;
     private EditText entradaPalabra;
+
     private ArrayList imagen =new ArrayList();
     private ArrayList palabraE = new ArrayList();
     private ArrayList palabraZ = new ArrayList();
@@ -53,14 +53,15 @@ public class DicEsFragment extends Fragment  {
     private String host="https://diidxa.itistmo.edu.mx/";
     //private String host="http://10.0.2.2/";
     private String archivo = "diccionarioDZ.php";
+    private int nf=0;//verifica que exista resultados
 
-    private int nf=0;
+
     //TODO: librerias
     private JSONArray jsonArray;
     private JSONObject json;
     private String purl;
     private URL url;
-    //private InputMethodManager imm;
+
     private MediaPlayer mp =new MediaPlayer();
     private String esp,zap,img,aud,eje,sig,audej;
     private CustomDialog cd = new CustomDialog();
@@ -96,7 +97,7 @@ public class DicEsFragment extends Fragment  {
                 if (!entradaPalabra.equals("") || entradaPalabra.length()>0){
 
                     // if(cc.isOnlineNet()) {
-                    descargarImagenes(entradaPalabra.getText().toString(), false, "");
+                    descargarImagenes(entradaPalabra.getText().toString(), false, "","");
                     palabraE.clear();
                     palabraZ.clear();
                     imagen.clear();
@@ -115,14 +116,14 @@ public class DicEsFragment extends Fragment  {
     }
 
     //TODO: comienza proceso
-    private void descargarImagenes(final String s, final boolean condiccional, final String Parzap) {
+    private void descargarImagenes(final String s, final boolean condiccional, final String Parzap,final String imag) {
         try{
         if(s.equals("")) { }else{
             final ProgressDialog pd = new ProgressDialog(getContext());
             pd.setMessage("Cargando Datos...");
             pd.show();
-            AsyncHttpClient ahc = new AsyncHttpClient();
             palabraE.clear(); palabraZ.clear(); imagen.clear();audioZa.clear(); ejemZ.clear();sigej.clear(); audioEjZa.clear();
+            AsyncHttpClient ahc = new AsyncHttpClient();
             ahc.get(host+"webservice/"+archivo+"?id="+s, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -155,7 +156,7 @@ public class DicEsFragment extends Fragment  {
                                        // Log.d("Pasos", "CONSULTA hay coincidencias");
                                         if (condiccional) {
 
-                                            if (esp.equals(s) && zap.equals(Parzap)) {
+                                            if (esp.equals(s) && zap.equals(Parzap) &&imag.equals(img)) {
                                                 palabraE.add(esp);
                                                 palabraZ.add(zap);
                                                 imagen.add(img);
@@ -164,6 +165,8 @@ public class DicEsFragment extends Fragment  {
                                                 sigej.add(sig);
                                                 audioEjZa.add(audej);
                                                 nf = 0;
+                                            }else {
+                                                noExiste();
                                             }
                                         } else {
                                             palabraE.add(esp);
@@ -198,13 +201,11 @@ public class DicEsFragment extends Fragment  {
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                    // FirebaseCrash.log("Error al conectar con el servidor: DiccionarioEsp");
                     cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
-                    //Log.d("Respuesta","Error al conectar con el servidor ",error);
-
                 }
                 });
             }
         }catch (Exception e){
-            FirebaseCrash.log("Error al realizar funcion busqueda DiccionarioEsp");
+            //FirebaseCrash.log("Error al realizar funcion busqueda DiccionarioEsp");
         }
 
     }
@@ -344,7 +345,8 @@ public class DicEsFragment extends Fragment  {
     @Subscribe
     public void ejecutar(DatosComunicacion d){
         entradaPalabra.setText(d.getEsp());
-        descargarImagenes(d.getEsp(),true,d.getZap());
+        //Toast.makeText(getActivity().getApplicationContext(),d.getEsp(),Toast.LENGTH_LONG).show();
+        descargarImagenes(d.getEsp(),true,d.getZap(),d.getImg());
     }
 
 

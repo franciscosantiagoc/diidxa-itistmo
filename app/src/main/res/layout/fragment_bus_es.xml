@@ -28,9 +28,9 @@
         android:baselineAligned="false">
         <ListView
             android:id="@+id/listviewBE"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginBottom="30dp"
             />
     </LinearLayout>
 </FrameLayout>

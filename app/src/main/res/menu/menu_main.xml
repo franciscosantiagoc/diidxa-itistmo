@@ -10,6 +10,9 @@
         android:id="@+id/action_MenZap"
         android:title="@string/action_menu_zapoteco" />
     <item
+        android:id="@+id/action_MenSug"
+        android:title="@string/action_menu_sug" />
+    <item
         android:id="@+id/action_MenAcer"
         android:title="@string/action_menu_AcercaDe" />
     <item

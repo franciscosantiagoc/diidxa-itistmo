@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivityEs extends AppCompatActivity implements BusEsFragment.Comunicador{
+public class MainActivityEs extends AppCompatActivity {//implements BusEsFragment.Comunicador{
 
     private ViewPager mViewPager;
     private static final String TAG = "MainActivity";
@@ -74,6 +74,12 @@ public class MainActivityEs extends AppCompatActivity implements BusEsFragment.C
             startActivity(new Intent(getBaseContext(), MainActivityZa.class)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
             finish();
+            //finish();
+        }
+        if(id==R.id.action_MenSug){
+            Intent intent = new Intent(this, Suggestions.class);
+            intent.putExtra("Idioma",true);
+            startActivity(intent);
         }
         if(id == R.id.action_MenAcer){
             Intent intent = new Intent (this, AcercaDe.class);
@@ -85,9 +91,11 @@ public class MainActivityEs extends AppCompatActivity implements BusEsFragment.C
         }
         return super.onOptionsItemSelected(item);
     }
-
+/*
     @Override
     public void envio() {
         tabLayout.getTabAt(0).select();
     }
+*/
+
 }

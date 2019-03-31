@@ -66,7 +66,7 @@
     <Button
         android:id="@+id/buttonPron"
         android:layout_marginTop="20dp"
-        android:layout_width="200dp"
+        android:layout_width="220dp"
         android:layout_height="50dp"
         android:background="@drawable/boton2"
         android:text="@string/PlaySonEsp"
@@ -77,7 +77,7 @@
     <Button
         android:id="@+id/buttonEJE"
         android:layout_marginTop="15dp"
-        android:layout_width="200dp"
+        android:layout_width="220dp"
         android:layout_height="50dp"
         android:background="@drawable/boton2"
         android:text="@string/PlayEjEsp"

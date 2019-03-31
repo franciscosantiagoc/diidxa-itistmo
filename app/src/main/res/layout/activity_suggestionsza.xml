@@ -10,31 +10,32 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"
             android:gravity="center_horizontal"
-            >
+            android:scrollbars="vertical">
 
             <LinearLayout
-                android:id="@+id/area_title"
+                android:id="@+id/area_titleza"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="Información sti' sugerencia."
-                        android:singleLine="false"
-                        android:gravity="center_horizontal"
-                        android:textSize="18dp"/>
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center_horizontal"
+                    android:singleLine="false"
+                    android:text="Información de la sugerencia."
+                    android:textSize="18dp" />
             </LinearLayout>
+
             <LinearLayout
-                android:id="@+id/area_palabra"
+                android:id="@+id/area_palabraza"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/area_title"
+                android:layout_below="@+id/area_titleza"
                 android:layout_marginTop="30dp"
                 android:orientation="horizontal">
 
@@ -50,25 +51,26 @@
                     android:layout_marginLeft="10dp">
 
                     <EditText
-                        android:paddingTop="10dp"
-                        android:id="@+id/tve_palabra"
+                        android:id="@+id/tve_palabraza"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:hint="@string/textsugPalZ"
                         android:inputType="textAutoCorrect"
-                        android:hint="@string/textsugPalE"/>
+                        android:paddingTop="10dp" />
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
+
             <LinearLayout
-                android:id="@+id/area_traduccion"
+                android:id="@+id/area_traduccionza"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/area_palabra"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp">
+                android:layout_below="@+id/area_palabraza"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/iv_traduccion"
+                    android:id="@+id/iv_traduccionza"
                     android:layout_width="60dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center_vertical"
@@ -80,30 +82,30 @@
                     android:layout_marginLeft="10dp">
 
                     <EditText
-                        android:id="@+id/ete_traduccion"
+                        android:id="@+id/ete_traduccionza"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:inputType="textAutoCorrect"
-                        android:hint="@string/textsugTrad"/>
+                        android:hint="@string/textsugTradZ"
+                        android:inputType="textAutoCorrect" />
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/area_nombre"
+                android:id="@+id/area_nombreza"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/area_traduccion"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp">
+                android:layout_below="@+id/area_traduccionza"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="50dp"
-                    android:layout_below="@+id/iv_traduccion"
-                    android:layout_column="0"
-                    android:layout_gravity="center_vertical"
                     android:layout_row="2"
+                    android:layout_column="0"
+                    android:layout_below="@+id/iv_traduccion"
+                    android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_user" />
 
                 <android.support.design.widget.TextInputLayout
@@ -112,30 +114,31 @@
                     android:layout_marginLeft="10dp">
 
                     <EditText
-                        android:id="@+id/etes_nombre"
+                        android:id="@+id/etes_nombreza"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:inputType="textAutoCorrect"
-                       android:hint="@string/textsugNom"/>
+                        android:hint="@string/textsugNomZ"
+                        android:inputType="textAutoCorrect" />
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
+
             <LinearLayout
-                android:id="@+id/area_email"
+                android:id="@+id/area_emailza"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/area_nombre"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp">
+                android:layout_below="@+id/area_nombreza"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/iv_email"
+                    android:id="@+id/iv_emailza"
                     android:layout_width="60dp"
                     android:layout_height="50dp"
-                    android:layout_below="@+id/iv_email"
-                    android:layout_column="0"
-                    android:layout_gravity="center_vertical"
                     android:layout_row="2"
+                    android:layout_column="0"
+                    android:layout_below="@+id/iv_email"
+                    android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_email" />
 
                 <android.support.design.widget.TextInputLayout
@@ -144,44 +147,41 @@
                     android:layout_marginLeft="10dp">
 
                     <EditText
-                        android:id="@+id/etes_email"
+                        android:id="@+id/etes_emailza"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:hint="@string/textsugEmailZ"
                         android:inputType="textEmailAddress"
-                        android:singleLine="true"
-                        android:hint="@string/textsugEmail"/>
+                        android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
             <!-- Bottom Bar -->
             <LinearLayout
-                android:layout_below="@id/area_email"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:layout_below="@id/area_emailza"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="30dp"
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btnes_cancelar"
+                    android:id="@+id/btnes_cancelarza"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/textsugBtnC"/>
+                    android:text="@string/textsugBtnCZ" />
 
                 <Button
-                    android:id="@+id/btnes_aceptar"
+                    android:id="@+id/btnes_aceptarza"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorAccent"
-                    android:textColor="@android:color/white"
-                    android:text="@string/textsugBtnE"/>
+                    android:text="@string/textsugBtnZ"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
 
         </RelativeLayout>
-
-
-
     </ScrollView>
 </FrameLayout>
