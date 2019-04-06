@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
-import android.widget.Button;
-import android.widget.TextView;
 
 public class CustomDialog extends DialogFragment {
     public void createDialog(String tit, String Desc, final boolean cerrar, Activity cont){
@@ -23,7 +21,7 @@ public class CustomDialog extends DialogFragment {
                     dismiss();
                     //onDestroy();
                 }else {
-                    dismiss();
+                    //dismiss();
                 }
             }
         });

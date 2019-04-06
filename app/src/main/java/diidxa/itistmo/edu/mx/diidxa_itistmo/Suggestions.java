@@ -1,34 +1,37 @@
 package diidxa.itistmo.edu.mx.diidxa_itistmo;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
 public class Suggestions extends AppCompatActivity {
     //private static String BASE_URL = "https://diidxa.itistmo.edu.mx/";
+    private static String TAG="SugerenciasES";
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("message");
 
-    //static String POST_URL = BASE_URL+"webservice/sugerencias.php";
     View focusView = null;
-
     EditText palabra, traduccion, nombre, correo;
     Button btnsceptar,btncancelar;
     RelativeLayout f1,f2;
 
 
-    private String host="https://diidxa.itistmo.edu.mx/";
-    //private String host="http://10.0.2.2/";
+    //private String host="https://diidxa.itistmo.edu.mx/webservice/";
+    private String host="http://10.0.2.2/diidxa-server-itistmo/";
     private String archivo = "Sugerencias.php";
     private CustomDialog cd = new CustomDialog();
     @Override
@@ -53,7 +56,9 @@ public class Suggestions extends AppCompatActivity {
         btncancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getBaseContext(), MainActivityEs.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                finish();
             }
         });
 
@@ -61,27 +66,45 @@ public class Suggestions extends AppCompatActivity {
 
     private void enviarDatos(String esp, String zap, String nombre, String correo) {
         try{
-            SimpleDateFormat DF= new SimpleDateFormat("yyyy-mm-dd", Locale.getDefault());
-            Date date=new Date();
-            String fecha=DF.format(date);
+            Time today=new Time(Time.getCurrentTimezone());
+            today.setToNow();
+            String fecha=today.year+"-"+(today.month+1)+"-"+today.monthDay;
             AsyncHttpClient ahc = new AsyncHttpClient();
             //http://localhost/diidxa-server-itistmo/Sugerencias.php?pal=cabeza&tra=ique&nom=fran&email=tripley_hhh@hotmail.com&fecha=2019-03-16
-            ahc.get(host+"webservice/"+archivo+"?pal="+esp+"&tra="+zap+"&nom="+nombre+"&email="+correo+"&fecha="+fecha, new AsyncHttpResponseHandler() {
+            //Log.d("Respuesta", host+archivo+"?pal="+esp+"&tra="+zap+"&nom="+nombre+"&email="+correo+"&fecha="+fecha);
+            final ProgressDialog pd = new ProgressDialog(this);
+            pd.setMessage("Cargando Datos...");
+            pd.show();
+           ahc.get(host+archivo+"?pal="+esp+"&tra="+zap+"&nom="+nombre+"&email="+correo+"&fecha="+fecha, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
+                    Log.d("Respuesta","Status: "+statusCode);
+                    pd.dismiss();
+                    cd.createDialog(getString(R.string.sug_tit_es),getString(R.string.sug_desc_es),false,Suggestions.this);
+                    limpiar();
                 }
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    // FirebaseCrash.log("Error al conectar con el servidor: DiccionarioEsp");
-                   cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,Suggestions.this);
+                    myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, "Status: "+statusCode);
+                    cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,Suggestions.this);
+                   //Log.d("Respuesta", String.valueOf(error));
                 }
             });
+            //Toast.makeText(getApplicationContext(),"Fecha actual: "+fecha,Toast.LENGTH_LONG).show();
 
         }catch (Exception e){
             //FirebaseCrash.log("Error al realizar funcion busqueda DiccionarioEsp");
+            myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, e);
+           // Log.d("Respuesta", String.valueOf(e));
+            cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,Suggestions.this);
         }
+    }
 
+    public void limpiar(){
+        palabra.setText("");
+        traduccion.setText("");
+        nombre.setText("");
+        correo.setText("");
     }
 
     private boolean validate(){

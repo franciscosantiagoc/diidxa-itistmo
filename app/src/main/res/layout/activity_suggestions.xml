@@ -21,14 +21,15 @@
                 android:layout_alignParentTop="true"
                 android:orientation="horizontal"
                 android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="Información sti' sugerencia."
-                        android:singleLine="false"
-                        android:gravity="center_horizontal"
-                        android:textSize="18dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center_horizontal"
+                    android:singleLine="false"
+                    android:text="Información de Sugerencia."
+                    android:textSize="20dp" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/area_palabra"

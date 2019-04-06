@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.snowdream.android.widget.SmartImageView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Callback;
@@ -35,6 +37,12 @@ import cz.msebera.android.httpclient.Header;
 
 
 public class DicEsFragment extends Fragment  {
+    private static String TAG="DiccionarioEs";
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("message");
+    DatabaseReference myimg = database.getReference("problem-with-image");
+    DatabaseReference myaud = database.getReference("problem-with-audio");
+    DatabaseReference myaudej = database.getReference("problem-with-audioej");
     //TODO: componentes
     private Button btnsuges, search;
     private ListView listView;
@@ -50,18 +58,16 @@ public class DicEsFragment extends Fragment  {
     private ArrayList audioEjZa =new ArrayList();
 
     //TODO:Variables
-    private String host="https://diidxa.itistmo.edu.mx/";
-    //private String host="http://10.0.2.2/";
+    //private String host="https://diidxa.itistmo.edu.mx/webservice/";
+    private String host="http://10.0.2.2/diidxa-server-itistmo/";
     private String archivo = "diccionarioDZ.php";
     private int nf=0;//verifica que exista resultados
-
 
     //TODO: librerias
     private JSONArray jsonArray;
     private JSONObject json;
     private String purl;
     private URL url;
-
     private MediaPlayer mp =new MediaPlayer();
     private String esp,zap,img,aud,eje,sig,audej;
     private CustomDialog cd = new CustomDialog();
@@ -95,8 +101,6 @@ public class DicEsFragment extends Fragment  {
             @Override
             public void onClick(View v) {
                 if (!entradaPalabra.equals("") || entradaPalabra.length()>0){
-
-                    // if(cc.isOnlineNet()) {
                     descargarImagenes(entradaPalabra.getText().toString(), false, "","");
                     palabraE.clear();
                     palabraZ.clear();
@@ -105,13 +109,9 @@ public class DicEsFragment extends Fragment  {
                     sigej.clear();
                     audioZa.clear();
                     audioEjZa.clear();
-                    /*}else{
-                        cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.Serv),true,getActivity());
-                    }*/
                 }
             }
         });
-
         return view;
     }
 
@@ -124,7 +124,7 @@ public class DicEsFragment extends Fragment  {
             pd.show();
             palabraE.clear(); palabraZ.clear(); imagen.clear();audioZa.clear(); ejemZ.clear();sigej.clear(); audioEjZa.clear();
             AsyncHttpClient ahc = new AsyncHttpClient();
-            ahc.get(host+"webservice/"+archivo+"?id="+s, new AsyncHttpResponseHandler() {
+            ahc.get(host+archivo+"?id="+s, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     pd.dismiss();
@@ -192,20 +192,21 @@ public class DicEsFragment extends Fragment  {
                             sug.setVisibility(View.VISIBLE);
                             btnsuges.setVisibility(View.VISIBLE);
                             nf = 1;
-                           // FirebaseCrash.log("Error al convertir JSON: DiccionarioEsp");
+                            myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON desde"+TAG, e);
                         }
                     }
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                   // FirebaseCrash.log("Error al conectar con el servidor: DiccionarioEsp");
-                    cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
+                    myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, "Status: "+statusCode);
+                   cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
                 }
                 });
             }
         }catch (Exception e){
-            //FirebaseCrash.log("Error al realizar funcion busqueda DiccionarioEsp");
+            myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, e);
+            cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
         }
 
     }
@@ -254,8 +255,7 @@ public class DicEsFragment extends Fragment  {
                         }
                         @Override
                         public void onError(Exception e) {
-                            //FirebaseCrash.log("Error al obtener imagen: "+imagen.get(i) + " de palabra "+palabraE.get(i));
-                            //
+                            myimg.setValue("imagen "+imagen.get(i)+" no detectada desde "+TAG);
                         }
 
                     });
@@ -281,10 +281,11 @@ public class DicEsFragment extends Fragment  {
                         mp.start();
 
                     } catch (Exception e) {
+                        myaud.setValue("Error al obtener audio: "+audioZa.get(i)+" desde"+TAG);
                         mp.stop();
                         mp=MediaPlayer.create(getActivity().getApplicationContext(),R.raw.audionodisponible);
                         mp.start();
-                        //FirebaseCrash.log("Error al obtener audio: "+audioZa.get(i)+" de la palabra "+palabraE.get(i) +" DiccionarioEsp");
+
                     }
                 }
             });
@@ -292,24 +293,22 @@ public class DicEsFragment extends Fragment  {
             btnsoundEjZapotec.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                  //  Toast.makeText(getActivity(),audioEjZa.get(i).toString(),Toast.LENGTH_SHORT).show();
-                        try {
-                            if(mp.isPlaying()) {
-                                mp.stop();
-                            }else{
-                                mp = new MediaPlayer();
-                                mp.setDataSource(host + "/app/capturista/traduccion/ejemplosz/"+ audioEjZa.get(i).toString());
-                                mp.prepare();
-                                mp.start();
-                            }
-                        } catch (Exception e) {
-                            mp.stop();
-                            mp=MediaPlayer.create(getActivity().getApplicationContext(),R.raw.audionodisponible);
-                            mp.start();
-                            //Log.d("Respuesta","Error al obtener el audio "+audioEjZa.get(i)+" del ejemplo de la palabra " + palabraE.get(i).toString()+" "+e);
-                            //FirebaseCrash.log("Error al obtener audioez: "+audioEjZa.get(i)+" de la palabra "+palabraE.get(i) + "DiccionarioEsp");
-                        }
+                try {
+                    if(mp.isPlaying()) {
+                        mp.stop();
+                    }else{
+                        mp = new MediaPlayer();
+                        mp.setDataSource(host + "/app/capturista/traduccion/ejemplosz/"+ audioEjZa.get(i).toString());
+                        mp.prepare();
+                        mp.start();
+                    }
+                } catch (Exception e) {
+                    myaudej.setValue("Error al obtener audio: "+audioEjZa.get(i)+" desde"+TAG);
+                    mp.stop();
+                    mp=MediaPlayer.create(getActivity().getApplicationContext(),R.raw.audionodisponible);
+                    mp.start();
+                    //Log.d("Respuesta","Error al obtener el audio "+audioEjZa.get(i)+" del ejemplo de la palabra " + palabraE.get(i).toString()+" "+e);
+                }
                 }
             });
             return viewG;
@@ -345,7 +344,6 @@ public class DicEsFragment extends Fragment  {
     @Subscribe
     public void ejecutar(DatosComunicacion d){
         entradaPalabra.setText(d.getEsp());
-        //Toast.makeText(getActivity().getApplicationContext(),d.getEsp(),Toast.LENGTH_LONG).show();
         descargarImagenes(d.getEsp(),true,d.getZap(),d.getImg());
     }
 

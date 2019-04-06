@@ -102,6 +102,13 @@
     <string name="textsugPalZ">Bicaa\' diidxa</string>
     <string name="SugCampo_V">Campo vacio</string>
     <string name="Sug_inv">Correo invalido</string>
+    <string name="sug_desc_es">Tu sugerencia ha sido enviada, ¡gracias!</string>
+    <string name="sug_tit_es">Sugerencia enviada</string>
+    <string name="SugZaCampo_V">Gasti ni ti diidxa rari\'</string>
+    <string name="Sugza_inv">Correu di\' qui iquiñeni\'</string>
+    <string name="ConexionServza">Error, gasti\' conexion neca servidor stinnu\'</string>
+    <string name="sug_tit_za">Ma biseendanu\' Sugerencia stiu\'</string>
+    <string name="sug_desc_za">Sugerencia stiu ma biseendanuni, ¡Xquixhepeli por gacaneu\' lannu!</string>
 
 
 </resources>

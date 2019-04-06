@@ -27,8 +27,8 @@
                     android:ems="10"
                     android:gravity="center_horizontal"
                     android:singleLine="false"
-                    android:text="Información de la sugerencia."
-                    android:textSize="18dp" />
+                    android:text="Información stí sugerencia ca'"
+                    android:textSize="20dp" />
             </LinearLayout>
 
             <LinearLayout

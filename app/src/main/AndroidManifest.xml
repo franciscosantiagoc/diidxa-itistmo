@@ -36,6 +36,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AcercaDe" />
         <activity android:name=".Suggestions" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="f54f803882f14b08e5c74abf6dd10e5b17f3304c" />
     </application>
 
 </manifest>

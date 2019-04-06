@@ -15,9 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.snowdream.android.widget.SmartImageView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Callback;
@@ -36,6 +37,13 @@ import cz.msebera.android.httpclient.Header;
 
 
 public class DicZaFragment extends Fragment {
+    private static String TAG="DiccionarioZa";
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("message");
+    DatabaseReference myimg = database.getReference("problem-with-image");
+    DatabaseReference myaud = database.getReference("problem-with-audio");
+    DatabaseReference myaudej = database.getReference("problem-with-audioej");
+
     private Button btnsuges, search;
     private ListView listView;
     private TextView sug, nosearch;
@@ -95,8 +103,6 @@ public class DicZaFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!entradaPalabra.equals("") || entradaPalabra.length()>0){
-
-                    // if(cc.isOnlineNet()) {
                     descargarImagenes(entradaPalabra.getText().toString(), false, "","");
                     palabraE.clear();
                     palabraZ.clear();
@@ -105,9 +111,6 @@ public class DicZaFragment extends Fragment {
                     sigej.clear();
                     audioZa.clear();
                     audioEjZa.clear();
-                    /*}else{
-                        cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.Serv),true,getActivity());
-                    }*/
                 }
             }
         });
@@ -191,20 +194,21 @@ public class DicZaFragment extends Fragment {
                                 sug.setVisibility(View.VISIBLE);
                                 btnsuges.setVisibility(View.VISIBLE);
                                 nf = 1;
-                                // FirebaseCrash.log("Error al convertir JSON: DiccionarioEsp");
+                                myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON desde"+TAG, e);
                             }
                         }
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        // FirebaseCrash.log("Error al conectar con el servidor: DiccionarioEsp");
+                        myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, "Status: "+statusCode);
                         cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
                     }
                 });
             }
         }catch (Exception e){
-            //FirebaseCrash.log("Error al realizar funcion busqueda DiccionarioEsp");
+            myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, e);
+            cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
         }
 
     }
@@ -253,8 +257,7 @@ public class DicZaFragment extends Fragment {
                 }
                 @Override
                 public void onError(Exception e) {
-                    //FirebaseCrash.log("Error al obtener imagen: "+imagen.get(i) + " de palabra "+palabraE.get(i));
-                    //
+                    myimg.setValue("imagen "+imagen.get(i)+" no detectada desde "+TAG);
                 }
 
             });
@@ -281,10 +284,10 @@ public class DicZaFragment extends Fragment {
                         mp.start();
 
                     } catch (Exception e) {
+                        myaud.setValue("Error al obtener audio: "+audioZa.get(i)+" desde"+TAG);
                         mp.stop();
                         mp=MediaPlayer.create(getActivity().getApplicationContext(),R.raw.audionodisponible);
                         mp.start();
-                        //FirebaseCrash.log("Error al obtener audio: "+audioZa.get(i)+" de la palabra "+palabraE.get(i) +" DiccionarioEsp");
                     }
                 }
             });
@@ -304,11 +307,12 @@ public class DicZaFragment extends Fragment {
                             mp.start();
                         }
                     } catch (Exception e) {
+                        myaudej.setValue("Error al obtener audio: "+audioEjZa.get(i)+" desde"+TAG);
                         mp.stop();
                         mp=MediaPlayer.create(getActivity().getApplicationContext(),R.raw.audionodisponible);
                         mp.start();
                         //Log.d("Respuesta","Error al obtener el audio "+audioEjZa.get(i)+" del ejemplo de la palabra " + palabraE.get(i).toString()+" "+e);
-                        //FirebaseCrash.log("Error al obtener audioez: "+audioEjZa.get(i)+" de la palabra "+palabraE.get(i) + "DiccionarioEsp");
+
                     }
                 }
             });
@@ -345,7 +349,7 @@ public class DicZaFragment extends Fragment {
     @Subscribe
     public void ejecu(DatosComunicacion d){
         entradaPalabra.setText(d.getEsp());
-        Toast.makeText(getActivity().getApplicationContext(),d.getEsp(),Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity().getApplicationContext(),d.getEsp(),Toast.LENGTH_LONG).show();
         descargarImagenes(d.getEsp(),true,d.getZap(),d.getImg());
     }
 

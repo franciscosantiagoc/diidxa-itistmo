@@ -11,7 +11,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/itilogo" />
 
     <TextView
@@ -20,25 +20,27 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imagenAc"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:layout_marginRight="40dp"
         android:gravity="center_horizontal"
         android:text="@string/Acer_Desc_Es"
-        android:textSize="15sp"
-        android:visibility="invisible"/>
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/MsjAcerZa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="40dp"
         android:layout_below="@+id/imagenAc"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="40dp"
         android:gravity="center_horizontal"
-        android:textSize="15sp"
         android:text="@string/Acer_Desc_Za"
-        android:visibility="invisible"/>
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:visibility="invisible" />
 
 
 
