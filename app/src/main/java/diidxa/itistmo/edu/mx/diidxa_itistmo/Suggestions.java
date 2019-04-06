@@ -30,8 +30,8 @@ public class Suggestions extends AppCompatActivity {
     RelativeLayout f1,f2;
 
 
-    //private String host="https://diidxa.itistmo.edu.mx/webservice/";
-    private String host="http://10.0.2.2/diidxa-server-itistmo/";
+    private String host="https://diidxa.itistmo.edu.mx/webservice/";
+    //private String host="http://10.0.2.2/diidxa-server-itistmo/";
     private String archivo = "Sugerencias.php";
     private CustomDialog cd = new CustomDialog();
     @Override

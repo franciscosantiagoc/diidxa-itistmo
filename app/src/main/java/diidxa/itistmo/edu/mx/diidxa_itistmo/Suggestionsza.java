@@ -26,8 +26,8 @@ public class Suggestionsza extends AppCompatActivity {
     View focusView = null;
     EditText palabraz,traduccionz, nombrez, correoz;
     Button btnsceptarz,btncancelarz;
-    //private String host="https://diidxa.itistmo.edu.mx/";
-    private String host="http://10.0.2.2/diidxa-server-itistmo/";
+    private String host="https://diidxa.itistmo.edu.mx/";
+    //private String host="http://10.0.2.2/diidxa-server-itistmo/";
     private String archivo = "Sugerencias.php";
 
     //static String POST_URL = BASE_URL+"webservice/sugerencias.php";

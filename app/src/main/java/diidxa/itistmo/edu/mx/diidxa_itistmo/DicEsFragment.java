@@ -58,8 +58,8 @@ public class DicEsFragment extends Fragment  {
     private ArrayList audioEjZa =new ArrayList();
 
     //TODO:Variables
-    //private String host="https://diidxa.itistmo.edu.mx/webservice/";
-    private String host="http://10.0.2.2/diidxa-server-itistmo/";
+    private String host="https://diidxa.itistmo.edu.mx/webservice/";
+    //private String host="http://10.0.2.2/diidxa-server-itistmo/";
     private String archivo = "diccionarioDZ.php";
     private int nf=0;//verifica que exista resultados
 

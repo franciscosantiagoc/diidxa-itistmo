@@ -41,8 +41,8 @@ public class BusEsFragment extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("message");
     DatabaseReference myimg = database.getReference("problem-with-image");
-    private String host="https://diidxa.itistmo.edu.mx/";
-    //private String host="http://10.0.2.2/";
+    //private String host="https://diidxa.itistmo.edu.mx/";
+    private String host="http://10.0.2.2/";
     private String archivo = "busqueda.php";
     private Button sugesBtnE;
     private ListView listView;
