@@ -58,7 +58,7 @@ public class DicEsFragment extends Fragment  {
     private ArrayList audioEjZa =new ArrayList();
 
     //TODO:Variables
-    private String host="https://diidxa.itistmo.edu.mx/webservice/";
+    private String host="https://diidxa.itistmo.edu.mx/";
     //private String host="http://10.0.2.2/diidxa-server-itistmo/";
     private String archivo = "diccionarioDZ.php";
     private int nf=0;//verifica que exista resultados
@@ -77,8 +77,6 @@ public class DicEsFragment extends Fragment  {
     public DicEsFragment() {
         // Required empty public constructor
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -114,7 +112,6 @@ public class DicEsFragment extends Fragment  {
         });
         return view;
     }
-
     //TODO: comienza proceso
     private void descargarImagenes(final String s, final boolean condiccional, final String Parzap,final String imag) {
         try{
@@ -124,7 +121,7 @@ public class DicEsFragment extends Fragment  {
             pd.show();
             palabraE.clear(); palabraZ.clear(); imagen.clear();audioZa.clear(); ejemZ.clear();sigej.clear(); audioEjZa.clear();
             AsyncHttpClient ahc = new AsyncHttpClient();
-            ahc.get(host+archivo+"?id="+s, new AsyncHttpResponseHandler() {
+            ahc.get(host+"webservice/"+archivo+"?id="+s, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     pd.dismiss();
@@ -339,7 +336,6 @@ public class DicEsFragment extends Fragment  {
     public void onPause() {
         super.onPause();
         recibe.unregister(this);
-
     }
     @Subscribe
     public void ejecutar(DatosComunicacion d){
