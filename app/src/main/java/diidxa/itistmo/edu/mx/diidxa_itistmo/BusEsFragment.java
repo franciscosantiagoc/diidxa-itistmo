@@ -106,36 +106,39 @@ public class BusEsFragment extends Fragment {
                                 palabraZ.clear();
                                 palabraE.clear();
                                 imagen.clear();
-                                //Log.d("RespuestaB","Respuesta: " + new String(responseBody));
                                 String resp=new String(responseBody);
-                                if(resp.equals("No existe")){
+                                Log.d("RespuestaB","Respuesta: " + resp);
 
+                                if(resp.contains("No existe")){
+                                    listView.setVisibility(View.INVISIBLE);
                                 }else {
+                                    listView.setVisibility(View.VISIBLE);
                                     JSONArray jsonArray = new JSONArray(resp);
 
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        json = jsonArray.getJSONObject(i);
-                                        palabraE.add(json.get("español"));
-                                        palabraZ.add(json.getString("zapoteco"));
-                                        imagen.add(json.get("imagen"));
-                                    }
-                                    Log.d("Datos", "Consulta realizada correctamente");
-                                    listView.setAdapter(new BusEsFragment.ImagenAdapter(getContext()));
-                                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                        //detecta el click a un item
-                                        @Override
-                                        public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                                            //com.envio();
-                                            DatosComunicacion d=new DatosComunicacion(palabraE.get(pos).toString(), palabraZ.get(pos).toString(),imagen.get(pos).toString());
-                                            envio.post(d);
-                                                Toast.makeText(getActivity().getApplicationContext(),getString(R.string.sel_item_bus_es1)+palabraE.get(pos)+" "+getString(R.string.sel_item_bus_es2),Toast.LENGTH_LONG).show();
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            json = jsonArray.getJSONObject(i);
+                                            palabraE.add(json.get("español"));
+                                            palabraZ.add(json.getString("zapoteco"));
+                                            imagen.add(json.get("imagen"));
                                         }
-                                    });
+                                        Log.d("Datos", "Consulta realizada correctamente");
+                                        listView.setAdapter(new BusEsFragment.ImagenAdapter(getContext()));
+                                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                            //detecta el click a un item
+                                            @Override
+                                            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                                                //com.envio();
+                                                DatosComunicacion d = new DatosComunicacion(palabraE.get(pos).toString(), palabraZ.get(pos).toString(), imagen.get(pos).toString());
+                                                envio.post(d);
+                                                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.sel_item_bus_es1) + palabraE.get(pos) + " " + getString(R.string.sel_item_bus_es2), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+
                                 }
                             } catch (JSONException e) {
-
-                                DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON",0,e.toString());
-                                CompExistError("Imagenes");
+                                Log.d("Respuesta","Error "+e);
+                                //DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON",0,e.toString());
+                                //CompExistError("JSON");
                                 //myRef.child("JSON").child(id).setValue(DE);
                             }
                         }
@@ -143,14 +146,14 @@ public class BusEsFragment extends Fragment {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),statusCode,error.toString());
-                        CompExistError("Imagenes");
+                        CompExistError("Servidor");
                         cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
                     }
                 });
             }
         }catch (Exception e){
             DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),0,e.toString());
-            CompExistError("Imagenes");
+            CompExistError("Servidor");
             cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
         }
     }
@@ -192,8 +195,12 @@ public class BusEsFragment extends Fragment {
                 }
                 @Override
                 public void onError(Exception e) {
-                    DE = new DatosError(TAG,"imagen '"+imagen.get(i)+"' de palabra "+ palabraE.get(i) +" no detectada",200,e.toString());
-                    CompExistError("Imagenes");
+                    try {
+                        DE = new DatosError(TAG, "imagen '" + imagen.get(i) + "' de palabra " + palabraE.get(i) + " no detectada", 200, e.toString());
+                        CompExistError("Imagenes");
+                    }catch (Exception ex){
+                        Log.d("Respuesta","Imagen error "+ex);
+                    }
                 }
             });
 

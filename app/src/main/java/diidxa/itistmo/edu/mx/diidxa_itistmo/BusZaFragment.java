@@ -108,9 +108,10 @@ public class BusZaFragment extends Fragment {
                                 imagen.clear();
                                 Log.d("RespuestaB","Respuesta: " + new String(responseBody));
                                 String resp=new String(responseBody);
-                                if(resp.equals("No existe")){
-
+                                if(resp.contains("No existe")){
+                                    listView.setVisibility(View.INVISIBLE);
                                 }else {
+                                    listView.setVisibility(View.VISIBLE);
                                     JSONArray jsonArray = new JSONArray(resp);
 
                                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -194,8 +195,12 @@ public class BusZaFragment extends Fragment {
                 }
                 @Override
                 public void onError(Exception e) {
-                    DE = new DatosError(TAG,"imagen '"+imagen.get(i)+"' de palabra "+ palabraE.get(i) +"no detectada",200,e.toString());
-                    CompExistError("Imagenes");
+                    try {
+                        DE = new DatosError(TAG, "imagen '" + imagen.get(i) + "' de palabra " + palabraE.get(i) + " no detectada", 200, e.toString());
+                        CompExistError("Imagenes");
+                    }catch (Exception ex){
+                        //Log.d("Respuesta","Imagen error "+ex);
+                    }
                 }
             });
             español.setText(palabraE.get(i).toString());
