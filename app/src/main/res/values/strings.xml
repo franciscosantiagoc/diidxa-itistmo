@@ -47,7 +47,7 @@
     <string name="textsugPalE">Escriba la palabra en español</string>
     <string name="textsugTrad">Escriba la traduccion (OPCIONAL)</string>
     <string name="textsugNom">Escriba su nombre</string>
-    <string name="textsugEmail">Escriba su correo</string>
+    <string name="textsugEmail">Escriba su correo (Gmail)</string>
     <string name="textsugBtnC">Cancelar</string>
     <string name="textsugBtnE">Enviar</string>
 
@@ -93,10 +93,9 @@
     <string name="zap_sug_pal">Bicaa\' diidxa</string>
     <string name="zap_sug_trad">Bicaa\' xhimodo rini\'ni</string>
     <string name="zap_sug_nom">Bicaa\' laalu</string>
-    <string name="zap_sug_email">Bicaa\' correu stiu\'</string>
     <string name="textsugBtnZ">Biseenda</string>
     <string name="textsugBtnCZ">Biree</string>
-    <string name="textsugEmailZ">Bicaa\' correu stiu\'</string>
+    <string name="textsugEmailZ">Bicaa\' correu stiu\' (Gmail)</string>
     <string name="textsugNomZ">Bicaa\' laa\'lu</string>
     <string name="textsugTradZ">Bicaa\' xhimodo rini\'ni</string>
     <string name="textsugPalZ">Bicaa\' diidxa</string>
