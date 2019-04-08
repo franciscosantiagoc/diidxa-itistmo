@@ -3,6 +3,7 @@ package diidxa.itistmo.edu.mx.diidxa_itistmo;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
 import android.util.Log;
@@ -10,16 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import cz.msebera.android.httpclient.Header;
-
-
-
-
 
 public class Suggestionsza extends AppCompatActivity {
     private static String TAG="SugerenciasZA";
@@ -33,8 +33,8 @@ public class Suggestionsza extends AppCompatActivity {
     //static String POST_URL = BASE_URL+"webservice/sugerencias.php";
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("message");
-
     private CustomDialog cd = new CustomDialog();
+    DatosError DE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +63,47 @@ public class Suggestionsza extends AppCompatActivity {
             }
         });
     }
+
+    private void enviarDatos(String esp, String zap, String nombre, String correo) {
+        try{
+            Time today=new Time(Time.getCurrentTimezone());
+            today.setToNow();
+            String fecha=today.year+"-"+(today.month+1)+"-"+today.monthDay;
+            AsyncHttpClient ahc = new AsyncHttpClient();
+            final ProgressDialog pd = new ProgressDialog(this);
+            pd.setMessage("Cargando Datos...");
+            pd.show();
+            ahc.get(host+archivo+"?pal="+esp+"&tra="+zap+"&nom="+nombre+"&email="+correo+"&fecha="+fecha, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    Log.d("Respuesta","Status: "+statusCode);
+                    pd.dismiss();//sug_tit_es   sug_desc_es
+                    cd.createDialog(getString(R.string.sug_tit_za),getString(R.string.sug_desc_za),false, Suggestionsza.this);
+                    limpiar();
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, "Status: "+statusCode);
+                    // Log.d("Respuesta", String.valueOf(error));
+                    cd.createDialog(getResources().getString(R.string.Serv),getString(R.string.ConexionServza),true, Suggestionsza.this);
+
+                }
+            });
+        }catch (Exception e){
+            //FirebaseCrash.log("Error al realizar funcion busqueda DiccionarioEsp");
+            myRef.child("Error").setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, e);
+            //Log.d("Respuesta", String.valueOf(e));
+            cd.createDialog(getResources().getString(R.string.Serv),getString(R.string.ConexionServza),true, Suggestionsza.this);
+        }
+    }
+
+    public void limpiar(){
+        palabraz.setText("");
+        traduccionz.setText("");
+        nombrez.setText("");
+        correoz.setText("");
+    }
+
     private boolean validate(){
         if(palabraz.getText().toString().trim().equals("")) {
             palabraz.setError(getString(R.string.SugZaCampo_V));
@@ -97,43 +138,30 @@ public class Suggestionsza extends AppCompatActivity {
         //TODO: Replace this with your own logic
         return email.contains("@")&&email.contains(".com");
     }
-    private void enviarDatos(String esp, String zap, String nombre, String correo) {
-        try{
-            Time today=new Time(Time.getCurrentTimezone());
-            today.setToNow();
-            String fecha=today.year+"-"+(today.month+1)+"-"+today.monthDay;
-            AsyncHttpClient ahc = new AsyncHttpClient();
-            final ProgressDialog pd = new ProgressDialog(this);
-            pd.setMessage("Cargando Datos...");
-            pd.show();
-            ahc.get(host+archivo+"?pal="+esp+"&tra="+zap+"&nom="+nombre+"&email="+correo+"&fecha="+fecha, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    Log.d("Respuesta","Status: "+statusCode);
-                    pd.dismiss();//sug_tit_es   sug_desc_es
-                    cd.createDialog(getString(R.string.sug_tit_za),getString(R.string.sug_desc_za),false,Suggestionsza.this);
-                    limpiar();
+    public void CompExistError(final String Child){
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean r=false;
+                for(DataSnapshot snapshot:dataSnapshot.child(Child).getChildren()){
+                    String desc=snapshot.child("descripcion").getValue().toString();
+                    String ta=snapshot.child("tag").getValue().toString();
+                    String er=snapshot.child("error").getValue().toString();
+                    if(desc.equals(DE.getDescripcion())&&ta.equals(DE.getTAG())&&er.equals(DE.getError())){
+                        r=true;
+                    }
                 }
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, "Status: "+statusCode);
-                   // Log.d("Respuesta", String.valueOf(error));
-                    cd.createDialog(getResources().getString(R.string.Serv),getString(R.string.ConexionServza),true,Suggestionsza.this);
+                if(!r){
+                    String id=myRef.push().getKey();
+                    myRef.child(Child).child(id).setValue(DE);
+                    Log.d("Respuesta","Se ha registrado el error correctamente");
+                }else
+                    Log.d("Respuesta","Existe error");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
 
-                }
-            });
-        }catch (Exception e){
-            //FirebaseCrash.log("Error al realizar funcion busqueda DiccionarioEsp");
-            myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, e);
-            //Log.d("Respuesta", String.valueOf(e));
-            cd.createDialog(getResources().getString(R.string.Serv),getString(R.string.ConexionServza),true,Suggestionsza.this);
-        }
-    }
+        });
 
-    public void limpiar(){
-        palabraz.setText("");
-        traduccionz.setText("");
-        nombrez.setText("");
-        correoz.setText("");
     }
 }

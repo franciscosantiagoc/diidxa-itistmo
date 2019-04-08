@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +19,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.snowdream.android.widget.SmartImageView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Callback;
@@ -40,9 +45,6 @@ public class DicEsFragment extends Fragment  {
     private static String TAG="DiccionarioEs";
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("message");
-    DatabaseReference myimg = database.getReference("problem-with-image");
-    DatabaseReference myaud = database.getReference("problem-with-audio");
-    DatabaseReference myaudej = database.getReference("problem-with-audioej");
     //TODO: componentes
     private Button btnsuges, search;
     private ListView listView;
@@ -73,7 +75,7 @@ public class DicEsFragment extends Fragment  {
     private CustomDialog cd = new CustomDialog();
     private ComprobarConexion cc=new ComprobarConexion();
     private EventBus recibe = EventBus.getDefault();
-
+    DatosError DE;
     public DicEsFragment() {
         // Required empty public constructor
     }
@@ -189,20 +191,23 @@ public class DicEsFragment extends Fragment  {
                             sug.setVisibility(View.VISIBLE);
                             btnsuges.setVisibility(View.VISIBLE);
                             nf = 1;
-                            myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON desde"+TAG, e);
+                            DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON",0,e.toString());
+                            CompExistError("JSON");
                         }
                     }
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, "Status: "+statusCode);
-                   cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
+                    DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),statusCode,error.toString());
+                    CompExistError("Servidor");
+                    cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
                 }
                 });
             }
         }catch (Exception e){
-            myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, e);
+            DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),0,e.toString());
+            CompExistError("Servidor");
             cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
         }
 
@@ -252,7 +257,8 @@ public class DicEsFragment extends Fragment  {
                         }
                         @Override
                         public void onError(Exception e) {
-                            myimg.setValue("imagen "+imagen.get(i)+" no detectada desde "+TAG);
+                            DE = new DatosError(TAG,"imagen '"+imagen.get(i)+"' de palabra "+ palabraE.get(i) +"no detectada",200,e.toString());
+                            CompExistError("Imagenes");
                         }
 
                     });
@@ -278,7 +284,8 @@ public class DicEsFragment extends Fragment  {
                         mp.start();
 
                     } catch (Exception e) {
-                        myaud.setValue("Error al obtener audio: "+audioZa.get(i)+" desde"+TAG);
+                        DE = new DatosError(TAG,"audio '"+audioZa.get(i)+"' de palabra "+ palabraE.get(i) +"no detectado",200,e.toString());
+                        CompExistError("Audios");
                         mp.stop();
                         mp=MediaPlayer.create(getActivity().getApplicationContext(),R.raw.audionodisponible);
                         mp.start();
@@ -300,7 +307,8 @@ public class DicEsFragment extends Fragment  {
                         mp.start();
                     }
                 } catch (Exception e) {
-                    myaudej.setValue("Error al obtener audio: "+audioEjZa.get(i)+" desde"+TAG);
+                    DE = new DatosError(TAG,"audio '"+audioEjZa.get(i)+"' de palabra "+ palabraE.get(i) +"no detectado",200,e.toString());
+                    CompExistError("AudiosEj");
                     mp.stop();
                     mp=MediaPlayer.create(getActivity().getApplicationContext(),R.raw.audionodisponible);
                     mp.start();
@@ -341,6 +349,33 @@ public class DicEsFragment extends Fragment  {
     public void ejecutar(DatosComunicacion d){
         entradaPalabra.setText(d.getEsp());
         descargarImagenes(d.getEsp(),true,d.getZap(),d.getImg());
+    }
+
+    public void CompExistError(final String Child){
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean r=false;
+                for(DataSnapshot snapshot:dataSnapshot.child(Child).getChildren()){
+                    String desc=snapshot.child("descripcion").getValue().toString();
+                    String ta=snapshot.child("tag").getValue().toString();
+                    String er=snapshot.child("error").getValue().toString();
+                    if(desc.equals(DE.getDescripcion())&&ta.equals(DE.getTAG())&&er.equals(DE.getError())){
+                        r=true;
+                    }
+                }
+                if(!r){
+                    String id=myRef.push().getKey();
+                    myRef.child(Child).child(id).setValue(DE);
+                    Log.d("Respuesta","Se ha registrado el error correctamente");
+                }else
+                    Log.d("Respuesta","Existe error");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+
+        });
+
     }
 
 

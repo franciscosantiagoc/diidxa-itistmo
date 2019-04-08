@@ -3,6 +3,7 @@ package diidxa.itistmo.edu.mx.diidxa_itistmo;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,8 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.snowdream.android.widget.SmartImageView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Callback;
@@ -40,7 +44,7 @@ public class BusEsFragment extends Fragment {
     private static String TAG="BusquedaEs";
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("message");
-    DatabaseReference myimg = database.getReference("problem-with-image");
+
     private String host="https://diidxa.itistmo.edu.mx/";
     //private String host="http://10.0.2.2/";
     private String archivo = "busqueda.php";
@@ -54,8 +58,8 @@ public class BusEsFragment extends Fragment {
     private CustomDialog cd = new CustomDialog();
     private ComprobarConexion cc=new ComprobarConexion();
     private EventBus envio = EventBus.getDefault();
-    private int contador=0;
-    //Comunicador com;
+    DatosError DE;
+    private boolean resComp;
 
     public BusEsFragment() {
         // Required empty public constructor
@@ -97,13 +101,12 @@ public class BusEsFragment extends Fragment {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         if (statusCode == 200) {
-                            //pd.dismiss();
 
                             try {
                                 palabraZ.clear();
                                 palabraE.clear();
                                 imagen.clear();
-                                Log.d("RespuestaB","Respuesta: " + new String(responseBody));
+                                //Log.d("RespuestaB","Respuesta: " + new String(responseBody));
                                 String resp=new String(responseBody);
                                 if(resp.equals("No existe")){
 
@@ -125,31 +128,29 @@ public class BusEsFragment extends Fragment {
                                             //com.envio();
                                             DatosComunicacion d=new DatosComunicacion(palabraE.get(pos).toString(), palabraZ.get(pos).toString(),imagen.get(pos).toString());
                                             envio.post(d);
-                                            if(contador==0){
                                                 Toast.makeText(getActivity().getApplicationContext(),getString(R.string.sel_item_bus_es1)+palabraE.get(pos)+" "+getString(R.string.sel_item_bus_es2),Toast.LENGTH_LONG).show();
-                                                contador++;
-                                            }else {
-                                                contador++;
-                                            }
                                         }
                                     });
                                 }
                             } catch (JSONException e) {
-                                //Log.d("RespuestaB", "Error al realizar consulta " + e);
-                                myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON desde"+TAG, e);
+
+                                DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON",0,e.toString());
+                                CompExistError("Imagenes");
+                                //myRef.child("JSON").child(id).setValue(DE);
                             }
                         }
                     }
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        //Log.d("RespuestaB","Error al conectar con el servidor: BusquedaEsp");
-                        myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, "Status: "+statusCode);
+                        DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),statusCode,error.toString());
+                        CompExistError("Imagenes");
                         cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
                     }
                 });
             }
         }catch (Exception e){
-            myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, e);
+            DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),0,e.toString());
+            CompExistError("Imagenes");
             cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
         }
     }
@@ -167,17 +168,14 @@ public class BusEsFragment extends Fragment {
         public int getCount() {
             return imagen.size();
         }
-
         @Override
         public Object getItem(int i) {
             return i;
         }
-
         @Override
         public long getItemId(int i) {
             return i;
         }
-
         @Override
         public View getView(final int i, View view, ViewGroup viewGroup) {
             ViewGroup viewG = (ViewGroup)layoutInflater.inflate(R.layout.desing_item_bus, null);
@@ -185,7 +183,6 @@ public class BusEsFragment extends Fragment {
             español = (TextView)viewG.findViewById(R.id.tvEspañolBus);
             zapoteco = (TextView)viewG.findViewById(R.id.tvZapotecoBus);
             String urlFinal = host+"/app/capturista/traduccion/images/"+imagen.get(i).toString();
-
             Rect rect = new Rect(smartImageView.getLeft(), smartImageView.getTop(), smartImageView.getRight(), smartImageView.getBottom());
 
             Context con = getActivity();
@@ -195,7 +192,8 @@ public class BusEsFragment extends Fragment {
                 }
                 @Override
                 public void onError(Exception e) {
-                    myimg.setValue("imagen "+imagen.get(i)+" no detectada desde "+TAG);
+                    DE = new DatosError(TAG,"imagen '"+imagen.get(i)+"' de palabra "+ palabraE.get(i) +" no detectada",200,e.toString());
+                    CompExistError("Imagenes");
                 }
             });
 
@@ -204,6 +202,35 @@ public class BusEsFragment extends Fragment {
             return viewG;
         }
     }
+
+
+    public void CompExistError(final String Child){
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean r=false;
+                for(DataSnapshot snapshot:dataSnapshot.child(Child).getChildren()){
+                    String desc=snapshot.child("descripcion").getValue().toString();
+                    String ta=snapshot.child("tag").getValue().toString();
+                    String er=snapshot.child("error").getValue().toString();
+                    if(desc.equals(DE.getDescripcion())&&ta.equals(DE.getTAG())&&er.equals(DE.getError())){
+                       r=true;
+                    }
+                }
+                if(!r){
+                    String id=myRef.push().getKey();
+                    myRef.child(Child).child(id).setValue(DE);
+                    Log.d("Respuesta","Se ha registrado el error correctamente");
+                }else
+                    Log.d("Respuesta","Existe error");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+
+        });
+
+    }
+
 
 
 }

@@ -3,6 +3,7 @@ package diidxa.itistmo.edu.mx.diidxa_itistmo;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,8 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.snowdream.android.widget.SmartImageView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Callback;
@@ -55,7 +59,8 @@ public class BusZaFragment extends Fragment {
     private CustomDialog cd = new CustomDialog();
     private ComprobarConexion cc=new ComprobarConexion();
     private EventBus envioz = EventBus.getDefault();
-    private int contador=0;
+    //private int contador=0;
+    DatosError DE;
     public BusZaFragment() {
         // Required empty public constructor
     }
@@ -81,7 +86,6 @@ public class BusZaFragment extends Fragment {
                 }
             }
         });
-
         return view;
     }
 
@@ -123,30 +127,29 @@ public class BusZaFragment extends Fragment {
                                         public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                                             DatosComunicacion d=new DatosComunicacion(palabraE.get(pos).toString(), palabraZ.get(pos).toString(),imagen.get(pos).toString());
                                             envioz.post(d);
-                                            if(contador==0){
-                                                Toast.makeText(getActivity().getApplicationContext(),getString(R.string.sel_item_bus_es1)+palabraE.get(pos)+" "+getString(R.string.sel_item_bus_es2),Toast.LENGTH_LONG).show();
-                                                contador++;
-                                            }else {
-                                                contador++;
-                                            }
+                                            Toast.makeText(getActivity().getApplicationContext(),getString(R.string.sel_item_bus_es1)+palabraE.get(pos)+" "+getString(R.string.sel_item_bus_es2),Toast.LENGTH_LONG).show();
+
                                         }
                                     });
                                 }
                             } catch (JSONException e) {
-                                Log.d("RespuestaB", "Error al realizar consulta " + e);
-                                myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, "Status: "+statusCode);
+                                DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON",0,e.toString());
+                                CompExistError("JSON");
                             }
                         }
                     }
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.d("RespuestaB","Error al conectar con el servidor: BusquedaEsp");
+                        DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),statusCode,error.toString());
+                        CompExistError("Servidor");
                         cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServza).toString(),true,getActivity());
                     }
                 });
             }
         }catch (Exception e){
-            myRef.setValue(getResources().getString(R.string.ConexionServza).toString()+" "+TAG, e);
+            DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),0,e.toString());
+            CompExistError("Servidor");
             cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServza).toString(),true,getActivity());
         }
 
@@ -191,15 +194,41 @@ public class BusZaFragment extends Fragment {
                 }
                 @Override
                 public void onError(Exception e) {
-                    myimg.setValue("imagen "+imagen.get(i)+" no detectada desde "+TAG);
+                    DE = new DatosError(TAG,"imagen '"+imagen.get(i)+"' de palabra "+ palabraE.get(i) +"no detectada",200,e.toString());
+                    CompExistError("Imagenes");
                 }
-
             });
-
             español.setText(palabraE.get(i).toString());
             zapoteco.setText(palabraZ.get(i).toString());
             return viewG;
         }
+    }
+
+    public void CompExistError(final String Child){
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean r=false;
+                for(DataSnapshot snapshot:dataSnapshot.child(Child).getChildren()){
+                    String desc=snapshot.child("descripcion").getValue().toString();
+                    String ta=snapshot.child("tag").getValue().toString();
+                    String er=snapshot.child("error").getValue().toString();
+                    if(desc.equals(DE.getDescripcion())&&ta.equals(DE.getTAG())&&er.equals(DE.getError())){
+                        r=true;
+                    }
+                }
+                if(!r){
+                    String id=myRef.push().getKey();
+                    myRef.child(Child).child(id).setValue(DE);
+                    Log.d("Respuesta","Se ha registrado el error correctamente");
+                }else
+                    Log.d("Respuesta","Existe error");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+
+        });
+
     }
 
 

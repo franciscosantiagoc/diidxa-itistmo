@@ -15,11 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Suggestionsza"></activity>
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,13 +29,19 @@
         <activity
             android:name=".MainActivityEs"
             android:label="@string/title_activity_main_es"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivityZa"
             android:label="@string/title_activity_main_za"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AcercaDe" />
-        <activity android:name=".Suggestions" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AcercaDe"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Suggestions"
+        android:screenOrientation="portrait"/>
+        <activity android:name=".Suggestionsza"
+            android:screenOrientation="portrait"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="f54f803882f14b08e5c74abf6dd10e5b17f3304c" />

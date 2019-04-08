@@ -3,6 +3,7 @@ package diidxa.itistmo.edu.mx.diidxa_itistmo;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
 import android.util.Log;
@@ -11,8 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -34,6 +38,8 @@ public class Suggestions extends AppCompatActivity {
     //private String host="http://10.0.2.2/diidxa-server-itistmo/";
     private String archivo = "Sugerencias.php";
     private CustomDialog cd = new CustomDialog();
+    DatosError DE;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +91,8 @@ public class Suggestions extends AppCompatActivity {
                 }
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, "Status: "+statusCode);
+                    DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),statusCode,error.toString());
+                    CompExistError("Servidor");
                     cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,Suggestions.this);
                    //Log.d("Respuesta", String.valueOf(error));
                 }
@@ -93,9 +100,8 @@ public class Suggestions extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(),"Fecha actual: "+fecha,Toast.LENGTH_LONG).show();
 
         }catch (Exception e){
-            //FirebaseCrash.log("Error al realizar funcion busqueda DiccionarioEsp");
-            myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, e);
-           // Log.d("Respuesta", String.valueOf(e));
+            DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),0,e.toString());
+            CompExistError("Servidor");
             cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,Suggestions.this);
         }
     }
@@ -145,6 +151,33 @@ public class Suggestions extends AppCompatActivity {
             //TODO: Replace this with your own logic
             return email.contains("@")&&email.contains(".com");
         }
+
+    public void CompExistError(final String Child){
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean r=false;
+                for(DataSnapshot snapshot:dataSnapshot.child(Child).getChildren()){
+                    String desc=snapshot.child("descripcion").getValue().toString();
+                    String ta=snapshot.child("tag").getValue().toString();
+                    String er=snapshot.child("error").getValue().toString();
+                    if(desc.equals(DE.getDescripcion())&&ta.equals(DE.getTAG())&&er.equals(DE.getError())){
+                        r=true;
+                    }
+                }
+                if(!r){
+                    String id=myRef.push().getKey();
+                    myRef.child(Child).child(id).setValue(DE);
+                    Log.d("Respuesta","Se ha registrado el error correctamente");
+                }else
+                    Log.d("Respuesta","Existe error");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+
+        });
+
+    }
 
 
 }
