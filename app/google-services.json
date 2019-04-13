@@ -1,68 +1,32 @@
 {
   "project_info": {
-    "project_number": "1088812976098",
-    "firebase_url": "https://diidxa-itistmo.firebaseio.com",
-    "project_id": "diidxa-itistmo",
-    "storage_bucket": "diidxa-itistmo.appspot.com"
+    "project_number": "462841514767",
+    "firebase_url": "https://diidxa-4c7e4.firebaseio.com",
+    "project_id": "diidxa-4c7e4",
+    "storage_bucket": "diidxa-4c7e4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1088812976098:android:b35fb07257ae1951",
+        "mobilesdk_app_id": "1:462841514767:android:95eeba2343e51a02",
         "android_client_info": {
-          "package_name": "diidxa.itistmo.edu.mx.diidxa_itistmo"
+          "package_name": "mx.edu.itistmo.diidxaza"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "1088812976098-6u7ogulegh5lq8gdo3urbmaqik0qlseb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "diidxa.itistmo.edu.mx.diidxa_itistmo",
-            "certificate_hash": "85c0b6c32b7e2182101d3148848193ee0b943794"
-          }
-        },
-        {
-          "client_id": "1088812976098-9j39gvh5f0pjn8pie8rhaef4ii5e7o6b.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "diidxa.itistmo.edu.mx.diidxa_itistmo",
-            "certificate_hash": "6388614d9ec49885c7ca9cf74a849681311acdde"
-          }
-        },
-        {
-          "client_id": "1088812976098-42amt0c62e13bsp6ndp2fciushdiohcl.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "diidxa.itistmo.edu.mx.diidxa_itistmo",
-            "certificate_hash": "3561c8d050e43b12cddecb572639fb0f847c0bc5"
-          }
-        },
-        {
-          "client_id": "1088812976098-cp75hqvhp86k8tr2titdui7e0ct0n3r1.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC0535M1kBtWZ5A7ku04Ad44xEQFfbhwLs"
+          "current_key": "AIzaSyBKcFLddfX9Xc4NkNasHOMtKR1LkPBmaX0"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1088812976098-cp75hqvhp86k8tr2titdui7e0ct0n3r1.apps.googleusercontent.com",
+              "client_id": "462841514767-k5d9s21ilputusond1birpmmttu05noo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

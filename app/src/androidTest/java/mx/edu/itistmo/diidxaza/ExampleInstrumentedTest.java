@@ -1,4 +1,4 @@
-package diidxa.itistmo.edu.mx.diidxa_itistmo;
+package mx.edu.itistmo.diidxaza;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

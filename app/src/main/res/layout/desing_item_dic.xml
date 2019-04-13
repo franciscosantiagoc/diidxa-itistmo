@@ -65,7 +65,7 @@
 
     <Button
         android:id="@+id/buttonPron"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="220dp"
         android:layout_height="50dp"
         android:background="@drawable/boton2"

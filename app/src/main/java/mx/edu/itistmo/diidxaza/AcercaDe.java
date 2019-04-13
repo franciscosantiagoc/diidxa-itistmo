@@ -1,4 +1,4 @@
-package diidxa.itistmo.edu.mx.diidxa_itistmo;
+package mx.edu.itistmo.diidxaza;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package diidxa.itistmo.edu.mx.diidxa_itistmo;
+package mx.edu.itistmo.diidxaza;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import mx.edu.itistmo.diidxaza.R;
 
 import com.github.snowdream.android.widget.SmartImageView;
 import com.google.firebase.database.DataSnapshot;
@@ -61,7 +63,7 @@ public class DicEsFragment extends Fragment  {
 
     //TODO:Variables
     private String host="https://diidxa.itistmo.edu.mx/";
-    //private String host="http://10.0.2.2/diidxa-server-itistmo/";
+    // private String host="http://10.0.2.2/diidxa-server-itistmo/";
     private String archivo = "diccionarioDZ.php";
     private int nf=0;//verifica que exista resultados
 
@@ -116,46 +118,62 @@ public class DicEsFragment extends Fragment  {
     }
     //TODO: comienza proceso
     private void descargarImagenes(final String s, final boolean condiccional, final String Parzap,final String imag) {
+
         try{
-        if(s.equals("")) { }else{
+        if(s.equals("")) { }else {
             final ProgressDialog pd = new ProgressDialog(getContext());
             pd.setMessage("Cargando Datos...");
             pd.show();
-            palabraE.clear(); palabraZ.clear(); imagen.clear();audioZa.clear(); ejemZ.clear();sigej.clear(); audioEjZa.clear();
-            AsyncHttpClient ahc = new AsyncHttpClient();
-            ahc.get(host+"webservice/"+archivo+"?id="+s, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    pd.dismiss();
-                    if (statusCode == 200) {
+            palabraE.clear();palabraZ.clear();imagen.clear();audioZa.clear();ejemZ.clear();sigej.clear();audioEjZa.clear();
+                AsyncHttpClient ahc = new AsyncHttpClient();
+                Log.d("Respuesta","Enlace: " + host + "webservice/" + archivo + "?id=" + s );
+                ahc.get(host + "webservice/" + archivo + "?id=" + s, new AsyncHttpResponseHandler() {
+                //Log.d("Respuesta",host + archivo + "?id=" + s);
+            //ahc.get(host + archivo + "?id=" + s, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         pd.dismiss();
+                        if (statusCode == 200) {
+                            pd.dismiss();
 
-                        try {
-                            nf = 1;
-                            String respuesta= new String(responseBody);
-                            if (respuesta.equals("No existe")) {
-                                noExiste();
-                            }else {
+                            try {
+                                nf = 1;
+                                String respuesta = new String(responseBody);
+                                //Log.d("Respuesta",respuesta);
+                                if (respuesta.equals("No existe")) {
+                                    noExiste();
+                                } else {
+                                    jsonArray = new JSONArray(respuesta);
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        json = jsonArray.getJSONObject(i);
+                                        esp = json.getString("español");
+                                        zap = json.getString("zapoteco");
+                                        img = json.getString("imagen");
+                                        aud = json.getString("audio");
+                                        eje = json.getString("ejemplo");
+                                        sig = json.getString("significado");
+                                        audej = json.getString("audioej");
+                                        if (esp.equals("No existe coincidencia") && zap.equals("con ningun idioma") && img.equals("losentimos.jpg")) {
+                                            noExiste();
+                                            // Log.d("Pasos", "CONSULTA no hay resultados");
+                                        } else {
+                                            mostrar();
+                                            // Log.d("Pasos", "CONSULTA hay coincidencias");
+                                            if (condiccional) {
 
-                                jsonArray = new JSONArray(respuesta);
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    json = jsonArray.getJSONObject(i);
-                                    esp = json.getString("español");
-                                    zap = json.getString("zapoteco");
-                                    img = json.getString("imagen");
-                                    aud = json.getString("audio");
-                                    eje = json.getString("ejemplo");
-                                    sig = json.getString("significado");
-                                    audej = json.getString("audioej");
-                                    if (esp.equals("No existe coincidencia") && zap.equals("con ningun idioma") && img.equals("losentimos.jpg")) {
-                                        noExiste();
-                                       // Log.d("Pasos", "CONSULTA no hay resultados");
-                                    } else {
-                                        mostrar();
-                                       // Log.d("Pasos", "CONSULTA hay coincidencias");
-                                        if (condiccional) {
-
-                                            if (esp.equals(s) && zap.equals(Parzap) &&imag.equals(img)) {
+                                                if (esp.equals(s) && zap.equals(Parzap) && imag.equals(img)) {
+                                                    palabraE.add(esp);
+                                                    palabraZ.add(zap);
+                                                    imagen.add(img);
+                                                    audioZa.add(aud);
+                                                    ejemZ.add(eje);
+                                                    sigej.add(sig);
+                                                    audioEjZa.add(audej);
+                                                    nf = 0;
+                                                } else {
+                                                    noExiste();
+                                                }
+                                            } else {
                                                 palabraE.add(esp);
                                                 palabraZ.add(zap);
                                                 imagen.add(img);
@@ -163,47 +181,39 @@ public class DicEsFragment extends Fragment  {
                                                 ejemZ.add(eje);
                                                 sigej.add(sig);
                                                 audioEjZa.add(audej);
-                                                nf = 0;
-                                            }else {
-                                                noExiste();
-                                            }
-                                        } else {
-                                            palabraE.add(esp);
-                                            palabraZ.add(zap);
-                                            imagen.add(img);
-                                            audioZa.add(aud);
-                                            ejemZ.add(eje);
-                                            sigej.add(sig);
-                                            audioEjZa.add(audej);
 
-                                            nf = 0;
+                                                nf = 0;
+                                            }
                                         }
                                     }
+                                    if (nf == 0) {
+                                        //Log.d("Respuesta","Imprementando vista");
+                                        listView.setAdapter(new DicEsFragment.ImagenAdapter(getContext()));
+                                    }
                                 }
-                                if (nf == 0) {
-                                    //Log.d("Respuesta","Imprementando vista");
-                                    listView.setAdapter(new DicEsFragment.ImagenAdapter(getContext()));
-                                }
+                            } catch (Exception e) {
+
+                                nosearch.setVisibility(View.INVISIBLE);
+                                listView.setVisibility(View.INVISIBLE);
+                                sug.setVisibility(View.VISIBLE);
+                                btnsuges.setVisibility(View.VISIBLE);
+                                nf = 1;
+                                DE = new DatosError(TAG, getResources().getString(R.string.ConexionServ).toString() + " conversion de JSON", 0, e.toString());
+                                CompExistError("JSON");
                             }
-                        } catch (JSONException e) {
-                            nosearch.setVisibility(View.INVISIBLE);
-                            listView.setVisibility(View.INVISIBLE);
-                            sug.setVisibility(View.VISIBLE);
-                            btnsuges.setVisibility(View.VISIBLE);
-                            nf = 1;
-                            DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON",0,e.toString());
-                            CompExistError("JSON");
+
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),statusCode,error.toString());
-                    CompExistError("Servidor");
-                    cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
-                }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.d("Respuesta","Error "+error.getMessage());
+                        DE = new DatosError(TAG, getResources().getString(R.string.ConexionServ).toString(), statusCode, error.toString());
+                        CompExistError("Servidor");
+                        cd.createDialog(getResources().getString(R.string.Serv), getResources().getString(R.string.ConexionServ).toString(), false, getActivity());
+                    }
                 });
+
             }
         }catch (Exception e){
             DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),0,e.toString());
@@ -266,7 +276,6 @@ public class DicEsFragment extends Fragment  {
             zapoteco.setText(palabraZ.get(i).toString());
             ejemplo.setText(ejemZ.get(i).toString());
             significado.setText(sigej.get(i).toString());
-
             //Boton implementado en listview para reproducir audio en zapoteco
             btnsoundZapotec.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -275,20 +284,26 @@ public class DicEsFragment extends Fragment  {
                         mp.stop();
                     }
                     try {
-                        purl = host + "/app/capturista/traduccion/zapoteco/"+ audioZa.get(i).toString();
-                        url = new URL(purl);
-                        //Log.d("Respuesta", "url: " + purl);
-                        mp = new MediaPlayer();
-                        mp.setDataSource(String.valueOf(url));
-                        mp.prepare();
-                        mp.start();
-
+                        if(palabraE.get(i).toString().contains(".aac")) {
+                            purl = host + "/app/capturista/traduccion/zapoteco/"+ audioZa.get(i).toString();
+                            url = new URL(purl);
+                            //Log.d("Respuesta", "url: " + purl);
+                            mp = new MediaPlayer();
+                            mp.setDataSource(String.valueOf(url));
+                            mp.prepare();
+                            mp.start();
+                        }else{
+                            mp = MediaPlayer.create(getActivity().getApplicationContext(), R.raw.audionodisponible);
+                            mp.start();
+                            DE = new DatosError(TAG, "audio '" + audioZa.get(i) + "' de palabra " + palabraE.get(i) + " no detectado", 200, "");
+                            CompExistError("Audios");
+                        }
                     } catch (Exception e) {
-                        DE = new DatosError(TAG,"audio '"+audioZa.get(i)+"' de palabra "+ palabraE.get(i) +"no detectado",200,e.toString());
-                        CompExistError("Audios");
-                        mp.stop();
-                        mp=MediaPlayer.create(getActivity().getApplicationContext(),R.raw.audionodisponible);
-                        mp.start();
+                            DE = new DatosError(TAG, "audio '" + audioZa.get(i) + "' de palabra " + palabraE.get(i) + " no detectado", 200, e.toString());
+                            CompExistError("Audios");
+                            mp.stop();
+                            mp = MediaPlayer.create(getActivity().getApplicationContext(), R.raw.audionodisponible);
+                            mp.start();
 
                     }
                 }
@@ -301,10 +316,17 @@ public class DicEsFragment extends Fragment  {
                     if(mp.isPlaying()) {
                         mp.stop();
                     }else{
-                        mp = new MediaPlayer();
-                        mp.setDataSource(host + "/app/capturista/traduccion/ejemplosz/"+ audioEjZa.get(i).toString());
-                        mp.prepare();
-                        mp.start();
+                        if(audioEjZa.get(i).toString().contains(".aac")) {
+                            mp = new MediaPlayer();
+                            mp.setDataSource(host + "/app/capturista/traduccion/ejemplosz/" + audioEjZa.get(i).toString());
+                            mp.prepare();
+                            mp.start();
+                        }else{
+                            DE = new DatosError(TAG,"audio '"+audioEjZa.get(i)+"' de palabra "+ palabraE.get(i) +" no detectado",200,"");
+                            CompExistError("AudiosEj");
+                            mp = MediaPlayer.create(getActivity().getApplicationContext(), R.raw.audionodisponible);
+                            mp.start();
+                        }
                     }
                 } catch (Exception e) {
                     DE = new DatosError(TAG,"audio '"+audioEjZa.get(i)+"' de palabra "+ palabraE.get(i) +"no detectado",200,e.toString());
@@ -369,7 +391,7 @@ public class DicEsFragment extends Fragment  {
                     myRef.child(Child).child(id).setValue(DE);
                     Log.d("Respuesta","Se ha registrado el error correctamente");
                 }else
-                    Log.d("Respuesta","Existe error");
+                    Log.d("Respuesta","Existe error "+DE.getError());
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}

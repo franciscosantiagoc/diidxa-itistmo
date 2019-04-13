@@ -1,9 +1,10 @@
-package diidxa.itistmo.edu.mx.diidxa_itistmo;
+package mx.edu.itistmo.diidxaza;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
+import mx.edu.itistmo.diidxaza.R;
 
 import java.util.List;
 

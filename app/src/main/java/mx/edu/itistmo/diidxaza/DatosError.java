@@ -1,4 +1,4 @@
-package diidxa.itistmo.edu.mx.diidxa_itistmo;
+package mx.edu.itistmo.diidxaza;
 
 public class DatosError {
    /* FirebaseDatabase database = FirebaseDatabase.getInstance();
