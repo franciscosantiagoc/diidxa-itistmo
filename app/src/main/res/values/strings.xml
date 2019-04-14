@@ -14,7 +14,6 @@
     <string name="alertB">Aceptar</string>
     <string name="adesc">Adesc</string>
 
-
     <!--........... ESPAÑOL...........-->
     <string name="tab_Dic">DICCIONARIO</string>
     <string name="tab_Bus">BUSQUEDA</string>
@@ -58,8 +57,20 @@
     <!-- TODO: Textos Errores -->
     <string name="ErrorCons">Error al realizar la consulta</string>
     <string name="CamposVacios">El campo está vacio, verifique los datos</string>
-
     <string name="ConexionServ">Error al conectar con el servidor, intentelo mas tarde</string>
+    <string name="tit_camposv">Error campos vacios</string>
+    <string name="camposv">Error, algunos de los campos se encuentran vacios o uno de los datos invalido, verifique los campos</string>
+    <string name="tit_info">Información</string>
+    <string name="sel_item_bus_es1">Ha seleccionado la palabra</string>
+    <string name="sel_item_bus_es2">Ahora dirijase  a la vista DICCIONARIO, para ver sus datos</string>
+    <string name="action_menu_sug">Sugerencias</string>
+    <string name="SugCampo_V">Campo vacio</string>
+    <string name="Sug_inv">Correo invalido</string>
+    <string name="sug_desc_es">Tu sugerencia ha sido enviada, ¡gracias!</string>
+    <string name="sug_tit_es">Sugerencia enviada</string>
+
+
+
     <!--........... ......................................ZAPOTECO ..............................................................................-->
 
     <string name="tab_Dic_Za">DIIDXA NAGANA</string>
@@ -84,12 +95,6 @@
     <!-- TODO: Desing Item Acerca de -->
     <string name="Acer_Desc_Za">CA BINNI STI\' INSTITUTO TECNOLÓGICO DEL ISTMO BINICA APLICACIÓN NDI, XQUIXHEPE HOMELINO TOLEDO CORTES NE AURELIO TOLEDO MATUS
         PURTI, BISIENECÁ NE GUCANÉCA LAANU\' TI GUNDA BININU DXIIÑA\' DI, PA RACALAADXU GACANEU, GABU\' LAANU\' PARA BICHENU, BICAA TI GUI\'DXI\' RA: diidxa@itistmo.edu.mx</string>
-    <string name="tit_camposv">Error campos vacios</string>
-    <string name="camposv">Error, algunos de los campos se encuentran vacios o uno de los datos invalido, verifique los campos</string>
-    <string name="tit_info">Información</string>
-    <string name="sel_item_bus_es1">Ha seleccionado la palabra</string>
-    <string name="sel_item_bus_es2">Ahora dirijase  a la vista DICCIONARIO, para ver sus datos</string>
-    <string name="action_menu_sug">Sugerencias</string>
     <string name="zap_sug_pal">Bicaa\' diidxa</string>
     <string name="zap_sug_trad">Bicaa\' xhimodo rini\'ni</string>
     <string name="zap_sug_nom">Bicaa\' laalu</string>
@@ -99,10 +104,7 @@
     <string name="textsugNomZ">Bicaa\' laa\'lu</string>
     <string name="textsugTradZ">Bicaa\' xhimodo rini\'ni</string>
     <string name="textsugPalZ">Bicaa\' diidxa</string>
-    <string name="SugCampo_V">Campo vacio</string>
-    <string name="Sug_inv">Correo invalido</string>
-    <string name="sug_desc_es">Tu sugerencia ha sido enviada, ¡gracias!</string>
-    <string name="sug_tit_es">Sugerencia enviada</string>
+
     <string name="SugZaCampo_V">Gasti ni ti diidxa rari\'</string>
     <string name="Sugza_inv">Correu di\' qui iquiñeni\'</string>
     <string name="ConexionServza">Error, gasti\' conexion neca servidor stinnu\'</string>

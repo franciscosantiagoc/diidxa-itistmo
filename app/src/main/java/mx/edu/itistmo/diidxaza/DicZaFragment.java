@@ -128,7 +128,7 @@ public class DicZaFragment extends Fragment {
                 pd.setMessage("Cargando Datos...");
                 pd.show();
                 palabraE.clear(); palabraZ.clear(); imagen.clear();audioZa.clear(); ejemZ.clear();sigej.clear(); audioEjZa.clear();
-                AsyncHttpClient ahc = new AsyncHttpClient();
+                AsyncHttpClient ahc = new AsyncHttpClient(true,80,443);
                 ahc.get(host+"webservice/"+archivo+"?id="+s, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -218,9 +218,6 @@ public class DicZaFragment extends Fragment {
         }
 
     }
-
-
-
     public class ImagenAdapter extends BaseAdapter {
         Context ctx;
         LayoutInflater layoutInflater;
@@ -278,17 +275,24 @@ public class DicZaFragment extends Fragment {
             btnsoundZapotec.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mp.isPlaying()) {
-                        mp.stop();
-                    }
                     try {
-                        purl = host + "/app/capturista/traduccion/zapoteco/"+ audioZa.get(i).toString();
-                        url = new URL(purl);
-                        //Log.d("Respuesta", "url: " + purl);
-                        mp = new MediaPlayer();
-                        mp.setDataSource(String.valueOf(url));
-                        mp.prepare();
-                        mp.start();
+                        if(mp.isPlaying()) {
+                            mp.stop();
+                        }
+                        if(palabraE.get(i).toString().contains(".aac")) {
+                            purl = host + "/app/capturista/traduccion/zapoteco/" + audioZa.get(i).toString();
+                            url = new URL(purl);
+                            //Log.d("Respuesta", "url: " + purl);
+                            mp = new MediaPlayer();
+                            mp.setDataSource(String.valueOf(url));
+                            mp.prepare();
+                            mp.start();
+                        }else{
+                            mp = MediaPlayer.create(getActivity().getApplicationContext(), R.raw.audionodisponible);
+                            mp.start();
+                            DE = new DatosError(TAG, "audio '" + audioZa.get(i) + "' de palabra " + palabraE.get(i) + " no detectado", 200, "");
+                            CompExistError("Audios");
+                        }
 
                     } catch (Exception e) {
                         DE = new DatosError(TAG,"audio '"+audioZa.get(i)+"' de palabra "+ palabraE.get(i) +"no detectado",200,e.toString());
@@ -309,10 +313,17 @@ public class DicZaFragment extends Fragment {
                         if(mp.isPlaying()) {
                             mp.stop();
                         }else{
-                            mp = new MediaPlayer();
-                            mp.setDataSource(host + "/app/capturista/traduccion/ejemplosz/"+ audioEjZa.get(i).toString());
-                            mp.prepare();
-                            mp.start();
+                            if(audioEjZa.get(i).toString().contains(".aac")) {
+                                mp = new MediaPlayer();
+                                mp.setDataSource(host + "/app/capturista/traduccion/ejemplosz/" + audioEjZa.get(i).toString());
+                                mp.prepare();
+                                mp.start();
+                            }else{
+                                DE = new DatosError(TAG,"audio '"+audioEjZa.get(i)+"' de palabra "+ palabraE.get(i) +" no detectado",200,"");
+                                CompExistError("AudiosEj");
+                                mp = MediaPlayer.create(getActivity().getApplicationContext(), R.raw.audionodisponible);
+                                mp.start();
+                            }
                         }
                     } catch (Exception e) {
                         DE = new DatosError(TAG,"audio '"+audioEjZa.get(i)+"' de palabra "+ palabraE.get(i) +"no detectado",200,e.toString());
@@ -384,7 +395,6 @@ public class DicZaFragment extends Fragment {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
-
         });
 
     }

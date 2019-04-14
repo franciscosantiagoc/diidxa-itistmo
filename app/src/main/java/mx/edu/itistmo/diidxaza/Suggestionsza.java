@@ -29,13 +29,13 @@ public class Suggestionsza extends AppCompatActivity {
     Button btnsceptarz,btncancelarz;
     private String host="https://diidxa.itistmo.edu.mx/";
     //private String host="http://10.0.2.2/diidxa-server-itistmo/";
-    private String archivo = "Sugerencias.php";
 
     //static String POST_URL = BASE_URL+"webservice/sugerencias.php";
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("message");
     private CustomDialog cd = new CustomDialog();
     DatosError DE;
+    DatosSugerencia DS;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,32 +70,44 @@ public class Suggestionsza extends AppCompatActivity {
             Time today=new Time(Time.getCurrentTimezone());
             today.setToNow();
             String fecha=today.year+"-"+(today.month+1)+"-"+today.monthDay;
-            AsyncHttpClient ahc = new AsyncHttpClient();
+            AsyncHttpClient ahc = new AsyncHttpClient(true,80,443);
             final ProgressDialog pd = new ProgressDialog(this);
             pd.setMessage("Cargando Datos...");
             pd.show();
-            ahc.get(host+archivo+"?pal="+esp+"&tra="+zap+"&nom="+nombre+"&email="+correo+"&fecha="+fecha, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    Log.d("Respuesta","Status: "+statusCode);
-                    pd.dismiss();//sug_tit_es   sug_desc_es
-                    cd.createDialog(getString(R.string.sug_tit_za),getString(R.string.sug_desc_za),false, Suggestionsza.this);
-                    limpiar();
-                }
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    myRef.setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, "Status: "+statusCode);
-                    // Log.d("Respuesta", String.valueOf(error));
-                    cd.createDialog(getResources().getString(R.string.Serv),getString(R.string.ConexionServza),true, Suggestionsza.this);
-
-                }
-            });
+            DS = new DatosSugerencia(esp,zap,nombre,correo);
+            CompExistSugerencia("Sugerencias");
+            pd.dismiss();
+            cd.createDialog(getString(R.string.sug_tit_za),getString(R.string.sug_desc_za),false, Suggestionsza.this);
+            limpiar();
         }catch (Exception e){
-            //FirebaseCrash.log("Error al realizar funcion busqueda DiccionarioEsp");
-            myRef.child("Error").setValue(getResources().getString(R.string.ConexionServ).toString()+" "+TAG, e);
-            //Log.d("Respuesta", String.valueOf(e));
+            DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),0,e.toString());
+            CompExistError("Servidor");
             cd.createDialog(getResources().getString(R.string.Serv),getString(R.string.ConexionServza),true, Suggestionsza.this);
         }
+    }
+
+    private void CompExistSugerencia(final String Child) {
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean r=false;
+                for(DataSnapshot snapshot:dataSnapshot.child(Child).getChildren()){
+                    String desc=snapshot.child("palabra").getValue().toString();
+                    String ta=snapshot.child("traduccion").getValue().toString();
+                    String er=snapshot.child("nombre").getValue().toString();
+                    if(desc.equals(DS.getPalabra())&&ta.equals(DS.getTraduccion())&&er.equals(DS.getNombre())){
+                        r=true;
+                    }
+                }
+                if(!r){
+                    String id=myRef.push().getKey();
+                    myRef.child(Child).child(id).setValue(DS);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+
+        });
     }
 
     public void limpiar(){

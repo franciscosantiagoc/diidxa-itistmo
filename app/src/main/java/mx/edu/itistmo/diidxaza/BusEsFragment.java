@@ -61,6 +61,7 @@ public class BusEsFragment extends Fragment {
     private EventBus envio = EventBus.getDefault();
     DatosError DE;
     private boolean resComp;
+    Comunicador com;
 
     public BusEsFragment() {
         // Required empty public constructor
@@ -97,7 +98,7 @@ public class BusEsFragment extends Fragment {
             if(s.equals("")) {
 
             }else {
-                AsyncHttpClient ahc = new AsyncHttpClient();
+                AsyncHttpClient ahc = new AsyncHttpClient(true,80,443);
                 ahc.get(host+"webservice/"+ archivo + "?id=" + s, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -131,16 +132,16 @@ public class BusEsFragment extends Fragment {
                                                 //com.envio();
                                                 DatosComunicacion d = new DatosComunicacion(palabraE.get(pos).toString(), palabraZ.get(pos).toString(), imagen.get(pos).toString());
                                                 envio.post(d);
-                                                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.sel_item_bus_es1) + palabraE.get(pos) + " " + getString(R.string.sel_item_bus_es2), Toast.LENGTH_LONG).show();
+                                                com.envio();
+                                                //Toast.makeText(getActivity().getApplicationContext(), getString(R.string.sel_item_bus_es1) + palabraE.get(pos) + " " + getString(R.string.sel_item_bus_es2), Toast.LENGTH_LONG).show();
                                             }
                                         });
 
                                 }
                             } catch (JSONException e) {
                                 Log.d("Respuesta","Error "+e);
-                                //DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON",0,e.toString());
-                                //CompExistError("JSON");
-                                //myRef.child("JSON").child(id).setValue(DE);
+                                DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON",0,e.toString());
+                                CompExistError("JSON");
                             }
                         }
                     }
@@ -240,5 +241,18 @@ public class BusEsFragment extends Fragment {
     }
 
 
+    //sobreescritura de metodos para la interaccion entre busqueda y diccionario
+    public void onAttach (Context cont){
+        super.onAttach(cont);
+        com=(Comunicador) cont;
+    }
+    public interface Comunicador {
+        public void envio();
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        com=null;
+    }
 }

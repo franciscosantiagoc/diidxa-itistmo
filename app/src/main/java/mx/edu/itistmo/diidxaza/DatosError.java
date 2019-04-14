@@ -1,19 +1,24 @@
 package mx.edu.itistmo.diidxaza;
 
+import android.text.format.Time;
+
 public class DatosError {
-   /* FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("message");*/
 
     private String TAG;
     private String descripcion;
     private int Status;
     private String error;
+    private String fecha;
 
     public DatosError(String TAG, String descripcion, int status, String error) {
         this.TAG = TAG;
         this.descripcion = descripcion;
         Status = status;
         this.error = error;
+
+        Time today=new Time(Time.getCurrentTimezone());
+        today.setToNow();
+        this.fecha=today.year+"-"+(today.month+1)+"-"+today.monthDay;
     }
 
 
@@ -50,7 +55,11 @@ public class DatosError {
         this.error = error;
     }
 
+    public String getFecha() {
+        return fecha;
+    }
 
-
-
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
 }

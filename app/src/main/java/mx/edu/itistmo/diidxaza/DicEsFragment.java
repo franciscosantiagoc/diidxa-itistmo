@@ -125,8 +125,7 @@ public class DicEsFragment extends Fragment  {
             pd.setMessage("Cargando Datos...");
             pd.show();
             palabraE.clear();palabraZ.clear();imagen.clear();audioZa.clear();ejemZ.clear();sigej.clear();audioEjZa.clear();
-                AsyncHttpClient ahc = new AsyncHttpClient();
-                Log.d("Respuesta","Enlace: " + host + "webservice/" + archivo + "?id=" + s );
+                AsyncHttpClient ahc = new AsyncHttpClient(true,80,443);
                 ahc.get(host + "webservice/" + archivo + "?id=" + s, new AsyncHttpResponseHandler() {
                 //Log.d("Respuesta",host + archivo + "?id=" + s);
             //ahc.get(host + archivo + "?id=" + s, new AsyncHttpResponseHandler() {
@@ -270,7 +269,6 @@ public class DicEsFragment extends Fragment  {
                             DE = new DatosError(TAG,"imagen '"+imagen.get(i)+"' de palabra "+ palabraE.get(i) +"no detectada",200,e.toString());
                             CompExistError("Imagenes");
                         }
-
                     });
             español.setText(palabraE.get(i).toString());
             zapoteco.setText(palabraZ.get(i).toString());
@@ -308,7 +306,6 @@ public class DicEsFragment extends Fragment  {
                     }
                 }
             });
-
             btnsoundEjZapotec.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -341,7 +338,6 @@ public class DicEsFragment extends Fragment  {
             return viewG;
         }
     }
-
     public void mostrar(){
         nosearch.setVisibility(View.VISIBLE);
         listView.setVisibility(View.VISIBLE);
@@ -397,7 +393,6 @@ public class DicEsFragment extends Fragment  {
             public void onCancelled(@NonNull DatabaseError databaseError) {}
 
         });
-
     }
 
 

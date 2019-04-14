@@ -62,6 +62,7 @@ public class BusZaFragment extends Fragment {
     private EventBus envioz = EventBus.getDefault();
     //private int contador=0;
     DatosError DE;
+    BusEsFragment.Comunicador com;
     public BusZaFragment() {
         // Required empty public constructor
     }
@@ -95,7 +96,7 @@ public class BusZaFragment extends Fragment {
             if(s.equals("")) {
 
             }else {
-                AsyncHttpClient ahc = new AsyncHttpClient();
+                AsyncHttpClient ahc = new AsyncHttpClient(true,80,443);
                 //ahc.get("https://"+host+"/webservice/busqueda.php?id="+s, new AsyncHttpResponseHandler() {
                 ahc.get(host + "/webservice/" + archivo + "?id=" + s, new AsyncHttpResponseHandler() {
 
@@ -129,7 +130,8 @@ public class BusZaFragment extends Fragment {
                                         public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                                             DatosComunicacion d=new DatosComunicacion(palabraE.get(pos).toString(), palabraZ.get(pos).toString(),imagen.get(pos).toString());
                                             envioz.post(d);
-                                            Toast.makeText(getActivity().getApplicationContext(),getString(R.string.sel_item_bus_es1)+palabraE.get(pos)+" "+getString(R.string.sel_item_bus_es2),Toast.LENGTH_LONG).show();
+                                            com.envio();
+                                            //Toast.makeText(getActivity().getApplicationContext(),getString(R.string.sel_item_bus_es1)+palabraE.get(pos)+" "+getString(R.string.sel_item_bus_es2),Toast.LENGTH_LONG).show();
 
                                         }
                                     });
@@ -235,6 +237,21 @@ public class BusZaFragment extends Fragment {
 
         });
 
+    }
+
+    //sobreescritura de metodos para la interaccion entre busqueda y diccionario
+    public void onAttach (Context cont){
+        super.onAttach(cont);
+        com=(BusEsFragment.Comunicador) cont;
+    }
+    public interface Comunicador {
+        public void envio();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        com=null;
     }
 
 

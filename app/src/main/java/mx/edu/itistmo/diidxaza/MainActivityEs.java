@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import mx.edu.itistmo.diidxaza.R;
 
-public class MainActivityEs extends AppCompatActivity {//implements BusEsFragment.Comunicador{
+public class MainActivityEs extends AppCompatActivity implements BusEsFragment.Comunicador{
 
     private ViewPager mViewPager;
     private static final String TAG = "MainActivity";
@@ -92,11 +92,11 @@ public class MainActivityEs extends AppCompatActivity {//implements BusEsFragmen
         }
         return super.onOptionsItemSelected(item);
     }
-/*
+
     @Override
     public void envio() {
         tabLayout.getTabAt(0).select();
     }
-*/
+
 
 }
