@@ -8,7 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import mx.edu.itistmo.diidxaza.R;
+
+import mx.edu.itistmo.diidxaza.Fragments.BusEsFragment;
+import mx.edu.itistmo.diidxaza.Fragments.DicEsFragment;
+import mx.edu.itistmo.diidxaza.Funciones.SectionsPageAdapter;
 
 public class MainActivityEs extends AppCompatActivity implements BusEsFragment.Comunicador{
 

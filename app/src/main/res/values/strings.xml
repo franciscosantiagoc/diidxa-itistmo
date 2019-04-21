@@ -38,9 +38,11 @@
     <string name="PlayEjEsp">Escuchar Ejemplo</string>
     <!-- TODO: Desing Item Acerca de -->
 
-    <string name="Acer_Desc_Es">ESTA APLICACION FUE DESARROLLADA POR ALUMNOS DEL INSTITUTO TECNOLÓGICO DEL ISTMO, AGRADECEMOS AL PROFESOR HOMELINO TOLEDO
+    <string name="Acer_Desc_Es">Esta aplicación fue desarrollada por estudiantes del Instituto Tecnológico del Istmo, agradecemos al profesor Homelino Toledo Cortes y al profesor Aurelio Toledo Matus por su orientación y su ayuda en el desarrollo de este proyecto, de la misma forma, expresamos nuestro sincero agradecimiento al Ingeniero Jorge Márquez Juárez por todo el apoyo brindado al proyecto y por confiar en nosotros para su realización.
+        \n\nSi deseas participar, informar de algún error, sugerencia o comentario, por favor envía un correo a diidxa@itistmo.edu.mx </string>
+    <!--ESTA APLICACION FUE DESARROLLADA POR ALUMNOS DEL INSTITUTO TECNOLÓGICO DEL ISTMO, AGRADECEMOS AL PROFESOR HOMELINO TOLEDO
         CORTES Y AL PROFESOR AURELIO TOLEDO MATUS POR SU ORIENTACIÓN Y SU AYUDA EN EL DESARROLLO DE ESTE PROYECTO, SI DESEAS PARTICIPAR, INFORMAR DE
-        ALGÚN ERROR, SUGERENCIA O COMENTARIO, POR FAVOR ENVÍA UN CORREO A diidxa@itistmo.edu.mx</string>
+        ALGÚN ERROR, SUGERENCIA O COMENTARIO, POR FAVOR ENVÍA UN CORREO A diidxa@itistmo.edu.mx</string>-->
 
     <!-- TODO: Desing Item Sugerencia -->
     <string name="textsugPalE">Escriba la palabra en español</string>
@@ -93,8 +95,11 @@
 
 
     <!-- TODO: Desing Item Acerca de -->
-    <string name="Acer_Desc_Za">CA BINNI STI\' INSTITUTO TECNOLÓGICO DEL ISTMO BINICA APLICACIÓN NDI, XQUIXHEPE HOMELINO TOLEDO CORTES NE AURELIO TOLEDO MATUS
-        PURTI, BISIENECÁ NE GUCANÉCA LAANU\' TI GUNDA BININU DXIIÑA\' DI, PA RACALAADXU GACANEU, GABU\' LAANU\' PARA BICHENU, BICAA TI GUI\'DXI\' RA: diidxa@itistmo.edu.mx</string>
+    <string name="Acer_Desc_Za">Aplicación ndi\' gunda gu\' cani ne ca binni sti\' Instituto Tecnológico del Istmo, xquixhepe Homelino Toledo Cortes ne Aurelio Toledo Matus purti\',
+        bisienecá ne gucanéca laanu\' ti gunda bi\'ninu dxiiña\' lu proyectu ndi\', saqueca\'  rudinu\' xhusquixhe Ingenieru Jorge Márquez por ti gucanebe lannu ne gupabe confianza lannu lu proyectu ndi\'.
+        \n\nPa raca laadxu gucaneu, gabu laanu para bichenu, bicaa ti gui\'dxi\' ra: diidxa@itistmo.edu.mx</string>
+    <!--CA BINNI STI\' INSTITUTO TECNOLÓGICO DEL ISTMO BINICA APLICACIÓN NDI, XQUIXHEPE HOMELINO TOLEDO CORTES NE AURELIO TOLEDO MATUS
+        PURTI, BISIENECÁ NE GUCANÉCA LAANU\' TI GUNDA BININU DXIIÑA\' DI, PA RACALAADXU GACANEU, GABU\' LAANU\' PARA BICHENU, BICAA TI GUI\'DXI\' RA: diidxa@itistmo.edu.mx</string>*/-->
     <string name="zap_sug_pal">Bicaa\' diidxa</string>
     <string name="zap_sug_trad">Bicaa\' xhimodo rini\'ni</string>
     <string name="zap_sug_nom">Bicaa\' laalu</string>

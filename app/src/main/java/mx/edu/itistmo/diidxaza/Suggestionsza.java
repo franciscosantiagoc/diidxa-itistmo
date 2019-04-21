@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import mx.edu.itistmo.diidxaza.R;
+
+import mx.edu.itistmo.diidxaza.Datos.DatosError;
+import mx.edu.itistmo.diidxaza.Datos.DatosSugerencia;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,9 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import cz.msebera.android.httpclient.Header;
 
 public class Suggestionsza extends AppCompatActivity {
     private static String TAG="SugerenciasZA";

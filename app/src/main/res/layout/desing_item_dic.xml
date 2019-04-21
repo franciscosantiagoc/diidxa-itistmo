@@ -38,7 +38,7 @@
         />
 
     <TextView
-        android:id="@+id/tvSignificado"
+        android:id="@+id/tvEjemplo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -51,17 +51,16 @@
         />
 
     <TextView
-        android:id="@+id/tvEjemplo"
+        android:id="@+id/tvSignificado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:textAlignment="center"
         android:textColor="#000"
-        android:textSize="14sp"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        />
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/buttonPron"

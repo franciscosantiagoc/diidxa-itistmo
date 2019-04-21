@@ -8,8 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import mx.edu.itistmo.diidxaza.R;
-public class MainActivityZa extends AppCompatActivity {
+
+import mx.edu.itistmo.diidxaza.Fragments.BusZaFragment;
+import mx.edu.itistmo.diidxaza.Fragments.DicZaFragment;
+import mx.edu.itistmo.diidxaza.Funciones.SectionsPageAdapter;
+
+public class MainActivityZa extends AppCompatActivity implements BusZaFragment.Comunicador{
 
     private ViewPager mViewPager;
     //private static final String TAG = "MainActivity";
@@ -99,6 +103,10 @@ public class MainActivityZa extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void envio() {
+        tabLayout.getTabAt(0).select();
     }
 
 }

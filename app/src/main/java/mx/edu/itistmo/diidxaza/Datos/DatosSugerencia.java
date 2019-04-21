@@ -1,4 +1,4 @@
-package mx.edu.itistmo.diidxaza;
+package mx.edu.itistmo.diidxaza.Datos;
 
 public class DatosSugerencia {
     private String palabra;

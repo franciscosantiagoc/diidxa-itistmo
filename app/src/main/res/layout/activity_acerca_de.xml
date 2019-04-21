@@ -26,7 +26,8 @@
         android:text="@string/Acer_Desc_Es"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_marginBottom="20dp"/>
 
     <TextView
         android:id="@+id/MsjAcerZa"
@@ -40,7 +41,8 @@
         android:text="@string/Acer_Desc_Za"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_marginBottom="20dp"/>
 
 
 

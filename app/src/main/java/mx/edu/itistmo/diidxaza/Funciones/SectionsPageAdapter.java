@@ -1,4 +1,4 @@
-package mx.edu.itistmo.diidxaza;
+package mx.edu.itistmo.diidxaza.Funciones;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -1,4 +1,4 @@
-package mx.edu.itistmo.diidxaza;
+package mx.edu.itistmo.diidxaza.Funciones;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -9,6 +9,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import mx.edu.itistmo.diidxaza.CustomDialog;
 
 public class ComprobarConexion {
     CustomDialog cd = new CustomDialog();
