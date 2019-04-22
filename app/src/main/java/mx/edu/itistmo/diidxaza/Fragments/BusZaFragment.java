@@ -1,38 +1,19 @@
 package mx.edu.itistmo.diidxaza.Fragments;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import mx.edu.itistmo.diidxaza.Funciones.ComprobarConexion;
-import mx.edu.itistmo.diidxaza.CustomDialog;
-import mx.edu.itistmo.diidxaza.Datos.DatosComunicacion;
-import mx.edu.itistmo.diidxaza.Datos.DatosError;
-
-import com.github.snowdream.android.widget.SmartImageView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
@@ -42,33 +23,31 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
+import mx.edu.itistmo.diidxaza.CustomDialog;
+import mx.edu.itistmo.diidxaza.Datos.DatosBusqueda;
+import mx.edu.itistmo.diidxaza.Datos.DatosComunicacion;
+import mx.edu.itistmo.diidxaza.Datos.DatosError;
+import mx.edu.itistmo.diidxaza.Funciones.AdapterList;
+import mx.edu.itistmo.diidxaza.Funciones.EnvioEr_Sug;
 import mx.edu.itistmo.diidxaza.R;
-
 
 public class BusZaFragment extends Fragment {
     private static String TAG="BusquedaZa";
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("message");
 
     private String host="https://diidxa.itistmo.edu.mx/";
     //private String host="http://10.0.2.2/";
     private String archivo = "busqueda.php";
 
-    private Button sugesBtnE;
     private ListView listView;
     EditText entradaPalabra;
 
     private JSONObject json;
-
-    ArrayList palabraZ = new ArrayList();
-    ArrayList palabraE = new ArrayList();
-    ArrayList imagen =new ArrayList();
+    ArrayList <DatosBusqueda> datos = new ArrayList<>();
 
     private CustomDialog cd = new CustomDialog();
-    private ComprobarConexion cc=new ComprobarConexion();
-    private EventBus envioz = EventBus.getDefault();
-
+    private EventBus envio = EventBus.getDefault();
     DatosError DE;
+    private EnvioEr_Sug EnvE;
     BusZaFragment.Comunicador com;
 
     public BusZaFragment() {
@@ -96,8 +75,10 @@ public class BusZaFragment extends Fragment {
                 }
             }
         });
+
         return view;
     }
+
 
     private void descargarImagenes(String s) {
         try{
@@ -110,13 +91,10 @@ public class BusZaFragment extends Fragment {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         if (statusCode == 200) {
-                            //pd.dismiss();
+
                             try {
-                                palabraZ.clear();
-                                palabraE.clear();
-                                imagen.clear();
-                                Log.d("RespuestaB","Respuesta: " + new String(responseBody));
                                 String resp=new String(responseBody);
+
                                 if(resp.contains("No existe")){
                                     listView.setVisibility(View.INVISIBLE);
                                 }else {
@@ -125,126 +103,46 @@ public class BusZaFragment extends Fragment {
 
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         json = jsonArray.getJSONObject(i);
-                                        palabraE.add(json.get("español"));
-                                        palabraZ.add(json.getString("zapoteco"));
-                                        imagen.add(json.get("imagen"));
+                                        String esp = json.getString("español");
+                                        String trad = json.getString("zapoteco");
+                                        String img = json.getString("imagen");
+                                        datos.add(new DatosBusqueda(esp,trad,img));
                                     }
-                                    Log.d("Datos", "Consulta realizada correctamente");
-                                    listView.setAdapter(new BusZaFragment.ImagenAdapter(getContext()));
+
+                                    listView.setAdapter(new AdapterList(datos,true,getActivity().getApplicationContext()));
                                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                         //detecta el click a un item
                                         @Override
                                         public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                                            /*DatosComunicacion d=new DatosComunicacion(palabraE.get(pos).toString(), palabraZ.get(pos).toString(),imagen.get(pos).toString());
-                                            envioz.post(d);
-                                            com.envio();*/
-                                            //Toast.makeText(getActivity().getApplicationContext(),getString(R.string.sel_item_bus_es1)+palabraE.get(pos)+" "+getString(R.string.sel_item_bus_es2),Toast.LENGTH_LONG).show();
-
+                                            DatosComunicacion d = new DatosComunicacion(datos.get(pos).getPal(), datos.get(pos).getTrad());
+                                            envio.post(d);
+                                            com.envio();
                                         }
                                     });
+
                                 }
                             } catch (JSONException e) {
                                 DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString()+" conversion de JSON",0,e.toString());
-                                CompExistError("JSON");
+                                EnvE = new EnvioEr_Sug("JSON",DE);
+                                EnvE.CompExistError();
                             }
                         }
                     }
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.d("RespuestaB","Error al conectar con el servidor: BusquedaEsp");
                         DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),statusCode,error.toString());
-                        CompExistError("Servidor");
+                        EnvE = new EnvioEr_Sug("Servidor",DE);
+                        EnvE.CompExistError();
                         cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServza).toString(),true,getActivity());
                     }
                 });
             }
         }catch (Exception e){
             DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),0,e.toString());
-            CompExistError("Servidor");
+            EnvE = new EnvioEr_Sug("Servidor",DE);
+            EnvE.CompExistError();
             cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServza).toString(),true,getActivity());
         }
-
-    }
-
-    public class ImagenAdapter extends BaseAdapter {
-        Context ctx;
-        LayoutInflater layoutInflater;
-        SmartImageView smartImageView;
-        TextView español,zapoteco;
-        public ImagenAdapter (Context app){
-            this.ctx=app;
-            layoutInflater=(LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-        @Override
-        public int getCount() {
-            return imagen.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return i;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(final int i, View view, ViewGroup viewGroup) {
-            ViewGroup viewG = (ViewGroup)layoutInflater.inflate(R.layout.desing_item_bus, null);
-            smartImageView = (SmartImageView)viewG.findViewById(R.id.imagen1Bus);
-            español = (TextView)viewG.findViewById(R.id.tvEspañolBus);
-            zapoteco = (TextView)viewG.findViewById(R.id.tvZapotecoBus);
-            String urlFinal = host+"/app/capturista/traduccion/images/"+imagen.get(i).toString();
-            Rect rect = new Rect(smartImageView.getLeft(), smartImageView.getTop(), smartImageView.getRight(), smartImageView.getBottom());
-            Context con = getActivity();
-            Picasso.get().load(urlFinal).error(R.drawable.imagenerror).fit().centerInside().into(smartImageView, new Callback(){
-                @Override
-                public void onSuccess() {
-                }
-                @Override
-                public void onError(Exception e) {
-                    try {
-                        DE = new DatosError(TAG, "imagen '" + imagen.get(i) + "' de palabra " + palabraE.get(i) + " no detectada", 200, e.toString());
-                        CompExistError("Imagenes");
-                    }catch (Exception ex){
-                        //Log.d("Respuesta","Imagen error "+ex);
-                    }
-                }
-            });
-            español.setText(palabraE.get(i).toString());
-            zapoteco.setText(palabraZ.get(i).toString());
-            return viewG;
-        }
-    }
-
-    public void CompExistError(final String Child){
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                boolean r=false;
-                for(DataSnapshot snap:dataSnapshot.child(Child).getChildren()) {
-                    for (DataSnapshot snapshot : snap.getChildren()) {
-                        String desc = snapshot.child("descripcion").getValue().toString();
-                        String ta = snapshot.child("tag").getValue().toString();
-                        String er = snapshot.child("error").getValue().toString();
-                        if (desc.equals(DE.getDescripcion()) && ta.equals(DE.getTAG()) && er.equals(DE.getError())) {
-                            r = true;
-                        }
-                    }
-                }
-                if(!r){
-                    String id=myRef.push().getKey();
-                    myRef.child(Child).child(DE.getFecha()).child(id).setValue(DE);
-                    Log.d("Respuesta","Se ha registrado el error correctamente");
-                }else
-                    Log.d("Respuesta","Existe error");
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-
-        });
 
     }
 
@@ -254,7 +152,7 @@ public class BusZaFragment extends Fragment {
         com=(BusZaFragment.Comunicador) cont;
     }
     public interface Comunicador {
-        public void envio();
+        void envio();
     }
 
     @Override
@@ -262,6 +160,4 @@ public class BusZaFragment extends Fragment {
         super.onDetach();
         com=null;
     }
-
-
 }

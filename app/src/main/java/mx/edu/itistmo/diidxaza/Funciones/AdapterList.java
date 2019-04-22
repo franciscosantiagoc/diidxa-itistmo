@@ -37,7 +37,7 @@ public class AdapterList extends BaseAdapter {
     private MediaPlayer mp =new MediaPlayer();
 
     private DatosError DE;
-    private EnvioErrores EnvE;
+    private EnvioEr_Sug EnvE;
 
     private String host="https://diidxa.itistmo.edu.mx/";
     private String TAG;
@@ -105,12 +105,12 @@ public class AdapterList extends BaseAdapter {
                             mp = MediaPlayer.create(cont.getApplicationContext(), R.raw.audionodisponible);
                             mp.start();
                             DE = new DatosError(TAG, "audio '" + datos.get(i).getAud() + "' de palabra " + datos.get(i).getPal() + " no detectado", 200, "");
-                            EnvE = new EnvioErrores("Audios",DE);
+                            EnvE = new EnvioEr_Sug("Audios",DE);
                             EnvE.CompExistError();
                         }
                     } catch (Exception e) {
                         DE = new DatosError(TAG, "audio '" + datos.get(i).getAud() + "' de palabra " + datos.get(i).getPal() + " no detectado", 200, e.toString());
-                        EnvE = new EnvioErrores("Audios",DE);
+                        EnvE = new EnvioEr_Sug("Audios",DE);
                         EnvE.CompExistError();
                         mp.stop();
                         mp = MediaPlayer.create(cont.getApplicationContext(), R.raw.audionodisponible);
@@ -132,7 +132,7 @@ public class AdapterList extends BaseAdapter {
                                 mp.start();
                             }else{
                                 DE = new DatosError(TAG,"audio '"+datos.get(i).getAudej()+"' de palabra "+ datos.get(i).getPal() +" no detectado",200,"");
-                                EnvE = new EnvioErrores("AudiosEj",DE);
+                                EnvE = new EnvioEr_Sug("AudiosEj",DE);
                                 EnvE.CompExistError();
                                 mp = MediaPlayer.create(cont.getApplicationContext(), R.raw.audionodisponible);
                                 mp.start();
@@ -140,7 +140,7 @@ public class AdapterList extends BaseAdapter {
                         }
                     } catch (Exception e) {
                         DE = new DatosError(TAG,"audio '"+datos.get(i).getAudej()+"' de palabra "+ datos.get(i).getPal() +" no detectado",200,e.toString());
-                        EnvE = new EnvioErrores("AudiosEj",DE);
+                        EnvE = new EnvioEr_Sug("AudiosEj",DE);
                         EnvE.CompExistError();
                         mp.stop();
                         mp=MediaPlayer.create(cont.getApplicationContext(),R.raw.audionodisponible);
@@ -163,10 +163,10 @@ public class AdapterList extends BaseAdapter {
             public void onError(Exception e) {
                 try {
                     DE = new DatosError(TAG, "imagen '" + datos.get(i).getImg() + "' de palabra " + datos.get(i).getPal() + " no detectada", 200, e.toString());
-                    EnvE = new EnvioErrores("Imagenes",DE);
+                    EnvE = new EnvioEr_Sug("Imagenes",DE);
                     EnvE.CompExistError();
                 }catch (Exception ex){
-                    Log.d("Respuesta","Imagen error "+ex);
+                    //Log.d("Respuesta","Imagen error "+ex);
                 }
             }
         });
