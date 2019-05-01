@@ -79,20 +79,22 @@ public class DicZaFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.listviewZa);
         btnsuges = (Button) view.findViewById(R.id.sugZapBtn);
 
-        btnsuges.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Suggestions.class);
-                intent.putExtra("palabra",entradaPalabra.getText());
-                getActivity().startActivity(intent);
-            }
-        });
+
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!entradaPalabra.equals("") || entradaPalabra.length()>0){
                     descargarImagenes(entradaPalabra.getText().toString(), false, "");
                 }
+            }
+        });
+
+        btnsuges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Suggestions.class);
+                intent.putExtra("palabra",entradaPalabra.getText().toString());
+                getActivity().startActivity(intent);
             }
         });
         return view;

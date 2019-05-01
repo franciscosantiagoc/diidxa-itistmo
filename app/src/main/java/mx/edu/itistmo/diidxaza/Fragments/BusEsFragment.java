@@ -86,7 +86,7 @@ public class BusEsFragment extends Fragment {
             if(s.equals("")) {
 
             }else {
-                AsyncHttpClient ahc = new AsyncHttpClient(false,80,443);
+                AsyncHttpClient ahc = new AsyncHttpClient(true,80,443);
                 ahc.get(host+"webservice/"+ archivo + "?id=" + s, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

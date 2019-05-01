@@ -56,6 +56,8 @@ public class Suggestionsza extends AppCompatActivity {
                 finish();
             }
         });
+        Bundle bundle = getIntent().getExtras();
+        palabraz.setText(bundle.getString("palabra"));
     }
 
     private void enviarDatos(String esp, String zap, String nombre, String correo) {

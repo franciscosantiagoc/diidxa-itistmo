@@ -56,6 +56,8 @@ public class Suggestions extends AppCompatActivity {
                 finish();
             }
         });
+        Bundle bundle = getIntent().getExtras();
+        palabra.setText(bundle.getString("palabra"));
 
     }
 

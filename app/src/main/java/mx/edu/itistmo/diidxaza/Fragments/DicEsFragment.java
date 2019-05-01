@@ -42,6 +42,7 @@ public class DicEsFragment extends Fragment  {
     private TextView sug, nosearch;
     private EditText entradaPalabra;
     //TODO:Variables
+    //private String host="https://172.31.0.8/";
     private String host="https://diidxa.itistmo.edu.mx/";
     // private String host="http://10.0.2.2";
     private String archivo = "diccionarioDZ.php";
@@ -71,29 +72,24 @@ public class DicEsFragment extends Fragment  {
         btnsuges = (Button) view.findViewById(R.id.sugEspBtn);
         nosearch = (TextView) view.findViewById(R.id.nosearch);
         listView = (ListView) view.findViewById(R.id.listview);
-        btnsuges.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Suggestions.class);
-                intent.putExtra("palabra",entradaPalabra.getText());
-                getActivity().startActivity(intent);
-            }
-        });
+
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!entradaPalabra.equals("") || entradaPalabra.length()>0){
                     descargarImagenes(entradaPalabra.getText().toString(), false, "");
-                    /*palabraE.clear();
-                    palabraZ.clear();
-                    imagen.clear();
-                    ejemZ.clear();
-                    sigej.clear();
-                    audioZa.clear();
-                    audioEjZa.clear();*/
                 }
             }
         });
+        btnsuges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Suggestions.class);
+                intent.putExtra("palabra",entradaPalabra.getText().toString());
+                getActivity().startActivity(intent);
+            }
+        });
+
         return view;
     }
     //TODO: comienza proceso
@@ -104,7 +100,7 @@ public class DicEsFragment extends Fragment  {
                 pd.setMessage("Cargando Datos...");
                 pd.show();
                 datos.clear();
-                AsyncHttpClient ahc = new AsyncHttpClient(false,80,443);
+                AsyncHttpClient ahc = new AsyncHttpClient(true,80,443);
                 ahc.get(host + "webservice/" + archivo + "?id=" + s, new AsyncHttpResponseHandler() {
                 //ahc.get(host + "/diidxa-server-itistmo/"+archivo + "?id=" + s, new AsyncHttpResponseHandler() {
                     @Override
