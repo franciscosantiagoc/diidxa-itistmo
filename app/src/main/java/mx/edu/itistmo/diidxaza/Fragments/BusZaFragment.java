@@ -34,8 +34,8 @@ import mx.edu.itistmo.diidxaza.R;
 public class BusZaFragment extends Fragment {
     private static String TAG="BusquedaZa";
 
-    private String host="https://diidxa.itistmo.edu.mx/";
-    //private String host="http://10.0.2.2/";
+    //private String host="https://diidxa.itistmo.edu.mx/";
+    private String host="http://10.0.2.2/";
     private String archivo = "busqueda.php";
 
     private ListView listView;

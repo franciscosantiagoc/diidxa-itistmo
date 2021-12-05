@@ -47,8 +47,8 @@ public class DicZaFragment extends Fragment {
     private EditText entradaPalabra;
 
     //TODO:Variables
-    private String host="https://diidxa.itistmo.edu.mx/";
-    //private String host="http://10.0.2.2/";
+    //private String host="https://diidxa.itistmo.edu.mx/";
+    private String host="http://10.0.2.2/";
     private String archivo = "diccionarioDZ.php";
 
     private ArrayList<DatosBusqueda> datos = new ArrayList<>();

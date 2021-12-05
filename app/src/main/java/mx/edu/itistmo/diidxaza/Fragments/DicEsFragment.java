@@ -43,8 +43,9 @@ public class DicEsFragment extends Fragment  {
     private EditText entradaPalabra;
     //TODO:Variables
     //private String host="https://172.31.0.8/";
-    private String host="https://diidxa.itistmo.edu.mx/";
-    // private String host="http://10.0.2.2";
+    //private String host="https://diidxa.itistmo.edu.mx/";
+    private String host="http://10.0.2.2/";
+    //private String host="http://192.168.0.6/";
     private String archivo = "diccionarioDZ.php";
 
     //TODO: librerias

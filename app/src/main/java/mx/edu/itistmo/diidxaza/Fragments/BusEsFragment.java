@@ -35,8 +35,10 @@ import mx.edu.itistmo.diidxaza.R;
 public class BusEsFragment extends Fragment {
     private static String TAG="BusquedaEs";
 
-    private String host="https://diidxa.itistmo.edu.mx/";
-    //private String host="http://10.0.2.2/";
+    //private String host="https://diidxa.itistmo.edu.mx/";
+    //private String host="localhost:8081/diidxa-server-itistmo/";
+    //private String host="127.0.0.1:8081/diidxa-server-itistmo/";
+    private String host="http://10.0.2.2/";
     private String archivo = "busqueda.php";
 
     private ListView listView;
@@ -140,7 +142,7 @@ public class BusEsFragment extends Fragment {
                 });
             }
         }catch (Exception e){
-            DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString(),0,e.toString());
+            DE = new DatosError(TAG,getResources().getString(R.string.ConexionServ).toString()+e,0,e.toString());
             EnvE = new EnvioEr_Sug("Servidor",DE);
             EnvE.CompExistError();
             cd.createDialog(getResources().getString(R.string.Serv),getResources().getString(R.string.ConexionServ).toString(),true,getActivity());
